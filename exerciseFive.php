@@ -4,7 +4,35 @@
     $row = 0;
     $guys = [];
     $file = [];
-    if (($file = fopen('guys.csv', 'r')) !== FALSE) {
+    $err = false;
+    $result = fopen("result.csv", "w+");
+    $headers = ['Mass', 'Height', 'Chest', 'IMT', 'IMT norm', 'Broke', 'Broke norm', 'Breytman', 'Breytman norm', 
+    'Berngard', 'Berngard norm', 'Davenport', 'Davenport norm', 'Noorden', 'Noorden norm', 'Tatonya', 'Tatonya norm'];
+    fputcsv($result, $headers);
+ 
+    if (count($argv) > 1) {
+        for ($i = 1; $i < count($argv); $i++) {
+            if ((float)$argv[$i] == 0) {
+                echo "Введите ненулевое число";
+                $err = true;
+            }
+        }
+        if (!$err) {
+            for ($i = 1; $i < count($argv); $i++) {
+                $guys[$row][] = $argv[$i];
+                if ($i % TABLE_COL == 0) {
+                    $row++;
+                }
+            }
+            if ((count($argv) - 1) % TABLE_COL == 1) {
+                echo "Введите свои рост и окружность грудной клетки.\n";
+                unset($guys[$row]);
+            } elseif ((count($argv) - 1) % TABLE_COL == 2) {
+                echo "Введите свою окружность грудной клетки.\n";
+                unset($guys[$row]);
+            }
+        }
+    } elseif (($file = fopen('guys.csv', 'r')) !== FALSE) {
         while (($line = fgetcsv($file, 1000, ',')) !== FALSE) {  
             for ($i = 0; $i < TABLE_COL; $i++) {
                 $guys[$row][$i] = $line[$i];
@@ -14,21 +42,28 @@
         }
         fclose($file);
     }
-
+    
     foreach ($guys as $guy) {
         $mass = $guy[0];
         $height = $guy[1];
         $chest = $guy[2];
-        echo "Mass: $mass, Height: $height, Chest circumference: $chest \n";
+
+        $list = [];
+        $list[] = $mass;
+        $list[] = $height;
+        $list[] = $chest;
+
         createIndex('IMT', round($mass * 10000 / ($height ** 2) , 2), (int)$mass);
-        createIndex('Brok', round($height - 100, 2), (int)$mass);
+        createIndex('Brok', round($height - 100, 2),(int)$mass);
         createIndex('Breytman', round($height * 0.7 - 50, 2), (int)$mass);
         createIndex('Berngard', round($chest * $height / 240, 2), (int)$mass);
         createIndex('Davenport', round($mass * 1000 / (($height ** 2)), 2), (int)$mass);
         createIndex('Noorden', round($height * 0.42, 2), (int)$mass);
         createIndex('Tatony', round($height - 100 - ($height - 100) / 20, 2), (int)$mass);
-    }
 
+        fputcsv($result, $list);
+    }
+    fclose($result);
     function createIndex(string $name, float $index, int $mass)
     {
         global $list;
@@ -39,7 +74,8 @@
         } else {
             $norm = norm($index, $mass);
         }
-        echo "Index $name: $index, Norm $name: $norm \n";
+        $list[] = $index;
+        $list[] = $norm;
     }
     
     function norm(float $index, int $mass) : string

@@ -13,8 +13,9 @@
             }
             $row++;
         }
+        fclose($file);
     }
-    fclose($file);
+   
 
     foreach ($guys as $guy) {
         $mass = $guy[0];
@@ -26,20 +27,19 @@
         $list[] = $height;
         $list[] = $chest;
 
-        createIndex('IMT', round($mass * 10000 / ($height ** 2) , 2), $mass);
-        createIndex('Brok', round($height - 100, 2), $mass);
-        createIndex('Breytman', round($height * 0.7 - 50, 2), $mass);
-        createIndex('Berngard', round($chest * $height / 240, 2), $mass);
-        createIndex('Davenport', round($mass * 1000 / (($height ** 2)), 2), $mass);
-        createIndex('Noorden', round($height * 0.42, 2), $mass);
-        createIndex('Tatony', round($height - 100 - ($height - 100) / 20, 2), $mass);
+        createIndex('IMT', round($mass * 10000 / ($height ** 2) , 2), (int)$mass);
+        createIndex('Brok', round($height - 100, 2),(int)$mass);
+        createIndex('Breytman', round($height * 0.7 - 50, 2), (int)$mass);
+        createIndex('Berngard', round($chest * $height / 240, 2), (int)$mass);
+        createIndex('Davenport', round($mass * 1000 / (($height ** 2)), 2), (int)$mass);
+        createIndex('Noorden', round($height * 0.42, 2), (int)$mass);
+        createIndex('Tatony', round($height - 100 - ($height - 100) / 20, 2), (int)$mass);
 
         fputcsv($result, $list);
     }
-
     fclose($result);
     
-    function createIndex($name, $index, $mass) 
+    function createIndex(string $name, float $index, int $mass)
     {
         global $list;
         if ($name == 'IMT') {
@@ -53,7 +53,8 @@
         $list[] = $norm;
     }
     
-    function norm($index, $mass) {
+    function norm(float $index, int $mass) : string
+    {
         if ((($index - 15) > $mass) || (($index + 15) < $mass)) {
             return '-';
         } else {
@@ -61,7 +62,7 @@
         }
     }
 
-    function normIMT($index)
+    function normIMT(float $index) : string
     {
         if ($index <= 16) {
             return 'Выраженный дефицит';
@@ -80,7 +81,7 @@
         }
     }
 
-    function normDavenport($index) 
+    function normDavenport(float $index) : string
     {
         if (($index > 3) or ($index < 1)) {
             return '-';
