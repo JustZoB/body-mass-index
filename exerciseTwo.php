@@ -4,7 +4,6 @@
     $row = 0;
     $guys = [];
     $file = [];
-    $list = [];
     $result = fopen("result.csv", "w+");
     if (($file = fopen('guys.csv', 'r')) !== FALSE) {
         while (($line = fgetcsv($file, 1000, ',')) !== FALSE) {  
@@ -22,10 +21,10 @@
         $height = $guy[1];
         $chest = $guy[2];
 
-        $elem = 0;
-        listCSV($mass);
-        listCSV($height);
-        listCSV($chest);
+        $list = [];
+        $list[] = $mass;
+        $list[] = $height;
+        $list[] = $chest;
 
         createIndex('IMT', round($mass * 10000 / ($height ** 2) , 2), $mass);
         createIndex('Brok', round($height - 100, 2), $mass);
@@ -42,6 +41,7 @@
     
     function createIndex($name, $index, $mass) 
     {
+        global $list;
         if ($name == 'IMT') {
             $norm = normIMT($index);
         } elseif ($name == 'Davenport') {
@@ -49,8 +49,8 @@
         } else {
             $norm = norm($index, $mass);
         }
-        listCSV($index);
-        listCSV($norm);
+        $list[] = $index;
+        $list[] = $norm;
     }
     
     function norm($index, $mass) {
@@ -87,13 +87,6 @@
         } else {
             return '+';
         }
-    }
-
-    function listCSV($element) 
-    {
-        global $list, $elem;
-        $list[$elem] = $element;
-        $elem++;
     }
 ?>
 
