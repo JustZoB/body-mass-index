@@ -1,38 +1,102 @@
 <?php
+    declare(strict_types = 1);
+    const TABLE_COL = 3;
     $row = 0;
-    if (($guys = fopen("guys.csv", "r")) !== FALSE) {
+    $guys = [];
+    $file = [];
+    $list = [];
     $result = fopen("result.csv", "w+");
-    $headers = array('Id', 'Mass', 'Height', 'BMI', 'Broke', 'Breytman', 'Berngard', 'Davenport', 'Noorden', 'Tatonya', 'Broke', 'Breytman', 'Berngard', 'Davenport', 'Noorden', 'Tatonya');
+    $headers = ['Mass', 'Height', 'Chest', 'IMT', 'IMT norm', 'Broke', 'Broke norm', 'Breytman', 'Breytman norm', 
+    'Berngard', 'Berngard norm', 'Davenport', 'Davenport norm', 'Noorden', 'Noorden norm', 'Tatonya', 'Tatonya norm'];
     fputcsv($result, $headers);
-        while (($data = fgetcsv($guys, 1000, ",")) !== FALSE) {
-            $row++;
-            for ($c=0; $c < 4; $c++) {
-                if ($c == 0) $mass = $data[$c]; 
-                elseif ($c == 1) $height = $data[$c];
-                elseif ($c == 2) $age = $data[$c];
-                elseif ($c == 3) $chest = $data[$c];
+    if (($file = fopen('guys.csv', 'r')) !== FALSE) {
+        while (($line = fgetcsv($file, 1000, ',')) !== FALSE) {  
+            for ($i = 0; $i < TABLE_COL; $i++) {
+                $guys[$row][$i] = $line[$i];
+                // mass, height, chest
             }
-            $index = round($mass / ($height ** 2), 2);
-            $heightSM = $height * 100;
-
-            $indexBroka = round($heightSM - 100, 2);
-            $indexBreytmana = round($heightSM * 0.7 - 50, 2);
-            $indexBerngarda = round($chest * $heightSM / 240, 2);
-            $indexDavenporta = round($mass * 1000 / (($heightSM ** 2)), 2);
-            $indexNoordena = round($heightSM * 0.42, 2);
-            $indexTatonya = round($heightSM - 100 - ($heightSM - 100) / 20, 2);
-
-            if ((($indexBroka - 15) > $mass) || (($indexBroka + 15) < $mass)) $normBroka = "не норма"; else $normBroka = "норма";
-            if ((($indexBreytmana - 15) > $mass) || (($indexBreytmana + 15) < $mass)) $normBreytmana = "не норма"; else $normBreytmana = "норма";
-            if ((($indexBerngarda - 15) > $mass) || (($indexBerngarda + 15) < $mass)) $normBerngarda = "не норма"; else $normBerngarda = "норма";
-            if (($indexDavenporta > 3) or ($indexDavenporta < 1)) $normDavenporta = "не норма"; else $normDavenporta = "норма";
-            if ((($indexNoordena - 15) > $mass) || (($indexNoordena + 15) < $mass)) $normNoordena = "не норма"; else $normNoordena = "норма";
-            if ((($indexTatonya - 15) > $mass) || (($indexTatonya + 15) < $mass)) $normTatonya = "не норма"; else $normTatonya = "норма";
-
-            $list = array($row,$mass,$height,$index, $indexBroka, $indexBreytmana, $indexBerngarda, $indexDavenporta, $indexNoordena, $indexTatonya, $normBroka, $normBreytmana, $normBerngarda, $normDavenporta, $normNoordena, $normTatonya);
-            fputcsv($result, $list);
+            $row++;
         }
-    fclose($guys);
+    }
+    fclose($file);
+
+    foreach ($guys as $guy) {
+        $mass = $guy[0];
+        $height = $guy[1];
+        $chest = $guy[2];
+
+        $elem = 0;
+        listCSV($mass);
+        listCSV($height);
+        listCSV($chest);
+
+        createIndex('IMT', round($mass * 10000 / ($height ** 2) , 2), $mass);
+        createIndex('Brok', round($height - 100, 2), $mass);
+        createIndex('Breytman', round($height * 0.7 - 50, 2), $mass);
+        createIndex('Berngard', round($chest * $height / 240, 2), $mass);
+        createIndex('Davenport', round($mass * 1000 / (($height ** 2)), 2), $mass);
+        createIndex('Noorden', round($height * 0.42, 2), $mass);
+        createIndex('Tatony', round($height - 100 - ($height - 100) / 20, 2), $mass);
+
+        fputcsv($result, $list);
+    }
+
     fclose($result);
+    
+    function createIndex($name, $index, $mass) 
+    {
+        if ($name == 'IMT') {
+            $norm = normIMT($index);
+        } elseif ($name == 'Davenport') {
+            $norm = normDavenport($index);
+        } else {
+            $norm = norm($index, $mass);
+        }
+        listCSV($index);
+        listCSV($norm);
+    }
+    
+    function norm($index, $mass) {
+        if ((($index - 15) > $mass) || (($index + 15) < $mass)) {
+            return '-';
+        } else {
+            return '+';
+        }
+    }
+
+    function normIMT($index)
+    {
+        if ($index <= 16) {
+            return 'Выраженный дефицит';
+        } elseif ($index <= 18.5) {
+            return 'Дефицит';
+        } elseif ($index <= 25) {
+            return 'Норма';
+        } elseif ($index <= 30) {
+            return 'Избыточная';
+        } elseif ($index <= 35) {
+            return 'Ожирение';
+        } elseif ($index <= 40) {
+            return 'Резкое ожирение';
+        } elseif ($index > 40) {
+            return 'Очень резкое ожирение';
+        }
+    }
+
+    function normDavenport($index) 
+    {
+        if (($index > 3) or ($index < 1)) {
+            return '-';
+        } else {
+            return '+';
+        }
+    }
+
+    function listCSV($element) 
+    {
+        global $list, $elem;
+        $list[$elem] = $element;
+        $elem++;
     }
 ?>
+
