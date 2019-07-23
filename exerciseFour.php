@@ -1,12 +1,13 @@
 <?php
     declare(strict_types = 1);
     require_once 'functions.php';
-    $row = 0;
+    
     $guys = [];
     
     $result = fopen("result.csv", "w+");
     $guyscount = 0;
-    $resultArray = addHeaders();
+    $resultArray = addHeaders($indexsArray, $guyscount);
+    $guyscount++;
 
     $err = false;
     for ($i = 1; $i < count($argv); $i++) {
@@ -16,7 +17,8 @@
         }
     }
     if (!$err) {
-        $guys = readARGV($argv);
+        $guys = readARGV($argv)[0];
+        $row = readARGV($argv)[1];
 
         if (count($argv) == 1) {
             echo "Введите свои массу, рост и окружность грудной клетки. \n";
@@ -33,10 +35,9 @@
             $resultArray[$guyscount]['height'] = $height = $guy['height'];
             $resultArray[$guyscount]['chest'] = $chest = $guy['chest'];
     
-            foreach ($indexsArray as $name) {
-                createIndexCSV($name, round($name((int)$height, (int)$mass, (int)$chest), 2), (int)$mass);
+            foreach ($indexsArray as $indexMT) {
+                $resultArray = createIndexCSV($indexMT['name'], $indexMT['formula']((int)$height, (int)$mass, (int)$chest), (int)$mass, $resultArray, $guyscount);
             }
-    
             $guyscount++;
         }
     }
