@@ -1,11 +1,9 @@
 <?php
     declare(strict_types = 1);
     require_once 'functions.php';
-    
+
     $guys = [];
     
-    $result = fopen("result.csv", "w+");
-    $guyscount = 0;
     $resultArray = addHeaders($indexsArray, $guyscount);
     $guyscount++;
 
@@ -17,8 +15,8 @@
         }
     }
     if (!$err) {
-        $guys = readARGV($argv)[0];
-        $row = readARGV($argv)[1];
+        $guys = readARGV($argv)['guys'];
+        $row = readARGV($argv)['row'];
 
         if (count($argv) == 1) {
             echo "Введите свои массу, рост и окружность грудной клетки. \n";

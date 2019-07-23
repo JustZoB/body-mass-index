@@ -4,8 +4,6 @@
 
     $guys = [];
 
-    $result = fopen("result.csv", "w+");
-    $guyscount = 0;
     $resultArray = addHeaders($indexsArray, $guyscount);
     $guyscount++;
 
@@ -18,8 +16,8 @@
             }
         }
         if (!$err) {
-            $guys = readARGV($argv)[0];
-            $row = readARGV($argv)[1];
+            $guys = readARGV($argv)['guys'];
+        $row = readARGV($argv)['row'];
 
             if ((count($argv) - 1) % TABLE_COL == 1) {
                 echo "Введите свои рост и окружность грудной клетки.\n";

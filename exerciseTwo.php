@@ -2,8 +2,6 @@
     declare(strict_types = 1);
     require_once 'functions.php';
 
-    $result = fopen("result.csv", "w+");
-    $guyscount = 0;
     $resultArray = [];    
 
     foreach (readGuys() as $guy) {
