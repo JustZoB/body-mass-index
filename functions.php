@@ -61,7 +61,7 @@ function addHeaders(array $indexsArray, int $guyscount): array
     $resultArray[$guyscount] = ['Mass', 'Height', 'Chest'];
     foreach ($indexsArray as $indexMT) {
         $name = $indexMT['name'];
-        array_push($resultArray[$guyscount], "$name", "$name norm");
+        array_push($resultArray[$guyscount], $name, $name . ' norm');
     }
 
     return $resultArray;
@@ -77,8 +77,8 @@ function createIndexCSV(string $name, float $index, int $mass, array $resultArra
 {
     $norm = norm($name, $index, $mass);
 
-    $resultArray[$guyscount]["$name"] = $index;
-    $resultArray[$guyscount]["Norm $name"] = $norm;
+    $resultArray[$guyscount][$name] = $index;
+    $resultArray[$guyscount]['Norm ' . $name] = $norm;
 
     return $resultArray;
 }
