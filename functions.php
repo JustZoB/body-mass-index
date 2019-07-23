@@ -61,8 +61,7 @@ function addHeaders(array $indexsArray, int $guyscount): array
     $resultArray[$guyscount] = ['Mass', 'Height', 'Chest'];
     foreach ($indexsArray as $indexMT) {
         $name = $indexMT['name'];
-        $resultArray[$guyscount][] = "$name";
-        $resultArray[$guyscount][] = "$name norm";
+        array_push($resultArray[$guyscount], "$name", "$name norm");
     }
 
     return $resultArray;
