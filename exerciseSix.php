@@ -1,3 +1,27 @@
+<?php
+require_once 'functions.php';
+
+if (isset($_POST['mass']) && isset($_POST['height']) && isset($_POST['chest'])) {
+    $result = fopen("result.csv", "w+");
+    
+    $resultArray = addTableHeaders($indexsArray, 0);
+    $guysCount = 1;
+
+    $resultArray[$guysCount]['mass'] = (int) $_POST['mass'];
+    $resultArray[$guysCount]['height'] = (int) $_POST['height'];
+    $resultArray[$guysCount]['chest'] = (int) $_POST['chest'];
+
+    foreach ($indexsArray as $indexBodyMass) {
+        $resultArray = writeIndexToResultArray($indexBodyMass['name'], 
+        $indexBodyMass['formula']((int) $_POST['height'], (int) $_POST['mass'], (int) $_POST['chest']), 
+        (int) $_POST['mass'], $resultArray, $guysCount);
+    }
+    foreach ($resultArray as $resultArrayString) {
+        fputcsv($result, $resultArrayString);
+    }
+    fclose($result);
+}
+?>
 <!DOCTYPE html>
 <html>
    <head>
@@ -10,35 +34,10 @@
         <p>Ваша окружнось грудной клетки: <input type="text" name="chest" /></p>
         <p><input type="submit" /></p>
     </form>
-    <?php
-    require_once 'functions.php';
-    
-    if ((int)$_POST['mass'] && (int)$_POST['height'] && (int)$_POST['chest']) {
-        $result = fopen("result.csv", "w+");
-        $guysCount = 0;
-        $resultArray = addTableHeaders($indexsArray, $guysCount);
-        $guysCount++;
-
-        $resultArray[$guysCount]['mass'] = (int) htmlspecialchars($_POST['mass']);
-        $resultArray[$guysCount]['height'] = (int) htmlspecialchars($_POST['height']);
-        $resultArray[$guysCount]['chest'] = (int) htmlspecialchars($_POST['chest']);
-
-        foreach ($indexsArray as $indexBodyMass) {
-            $resultArray = writeIndexToResultArray($indexBodyMass['name'], 
-            $indexBodyMass['formula']((int) $_POST['height'], (int) $_POST['mass'], (int) $_POST['chest']), 
-            (int) $_POST['mass'], $resultArray, $guysCount);
-        }
-        foreach ($resultArray as $resultArrayString) {
-            fputcsv($result, $resultArrayString);
-        }
-        fclose($result);
-
-        echo '<p>Вес ' . htmlspecialchars($_POST['mass']) . '</p>';
-        echo '<p>Рост ' . htmlspecialchars($_POST['height']) . '</p>';
-        echo '<p>Окружнось грудной клетки ' . htmlspecialchars($_POST['chest']) . '</p>';
-    } else {
-        echo '<br /><p>Введите корректные данные</p>';
-    }
-    ?>
+    <?php if (isset($_POST['mass']) && isset($_POST['height']) && isset($_POST['chest'])) :  ?>
+     <?= '<p>Вес ' . htmlspecialchars($_POST['mass']) . '</p>' ?>
+     <?= '<p>Рост ' . htmlspecialchars($_POST['height']) . '</p>' ?>
+     <?= '<p>Окружнось грудной клетки ' . htmlspecialchars($_POST['chest']) . '</p>' ?>
+     <?php endif ?>
    </body>
 </html>
