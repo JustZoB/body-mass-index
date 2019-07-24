@@ -71,7 +71,7 @@ function readGuys(): array
     return $guys;
 }
 
-function readARGV(array $argv): array
+function readArgv(array $argv): array
 {
     $row = 0;
     $guys = [];
@@ -121,7 +121,7 @@ function writeIndexToResultArray(string $name, float $index, int $mass, array $r
 function norm(string $name, float $index, int $mass): string
 {
     if ($name === 'IMT') {
-        $norm = normIMT($index);
+        $norm = normIndexBodyMass($index);
     } elseif ($name == 'Davenport') {
         $norm = normDavenport($index);
     } else {
@@ -139,7 +139,7 @@ function normOther(float $index, int $mass): string
     }
 }
 
-function normIMT(float $index): string
+function normIndexBodyMass(float $index): string
 {
     switch ($index) {
         case ($index <= 16):

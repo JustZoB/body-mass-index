@@ -17,8 +17,9 @@ for ($i = 1; $i < count($argv); $i++) {
     }
 }
 if (!$err) {
-    $guys = readARGV($argv)['guys'];
-    $row = readARGV($argv)['row'];
+    $returnedArray = readArgv($argv);
+    $guys = $returnedArray['guys'];
+    $row = $returnedArray['row'];
 
     if (count($argv) === 1) {
         echo "Введите свои массу, рост и окружность грудной клетки. \n";
