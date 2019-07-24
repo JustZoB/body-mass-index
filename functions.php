@@ -91,12 +91,12 @@ function readARGV(array $argv): array
     return ['guys' => $guys, 'row' => $row];
 }
 
-function addTableHeaders(array $indexsArray, int $guyscount): array
+function addTableHeaders(array $indexsArray, int $guysCount): array
 {
-    $resultArray[$guyscount] = ['Mass', 'Height', 'Chest'];
-    foreach ($indexsArray as $indexMT) {
-        $name = $indexMT['name'];
-        array_push($resultArray[$guyscount], $name, $name . ' norm');
+    $resultArray[$guysCount] = ['Mass', 'Height', 'Chest'];
+    foreach ($indexsArray as $indexBodyMass) {
+        $name = $indexBodyMass['name'];
+        array_push($resultArray[$guysCount], $name, $name . ' norm');
     }
 
     return $resultArray;
@@ -108,12 +108,12 @@ function showIndex(string $name, float $index, int $mass)
     echo "Index $name: $index, Norm $name: $norm \n";
 }
 
-function writeIndexToResultArray(string $name, float $index, int $mass, array $resultArray, int $guyscount): array
+function writeIndexToResultArray(string $name, float $index, int $mass, array $resultArray, int $guysCount): array
 {
     $norm = norm($name, $index, $mass);
 
-    $resultArray[$guyscount][$name] = $index;
-    $resultArray[$guyscount]['Norm ' . $name] = $norm;
+    $resultArray[$guysCount][$name] = $index;
+    $resultArray[$guysCount]['Norm ' . $name] = $norm;
 
     return $resultArray;
 }

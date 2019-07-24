@@ -5,9 +5,9 @@ require_once 'functions.php';
 $guys = [];
 
 $result = fopen("result.csv", "w+");
-$guyscount = 0;
-$resultArray = addTableHeaders($indexsArray, $guyscount);
-$guyscount++;
+$guysCount = 0;
+$resultArray = addTableHeaders($indexsArray, $guysCount);
+$guysCount++;
 
 $err = false;
 for ($i = 1; $i < count($argv); $i++) {
@@ -31,16 +31,16 @@ if (!$err) {
     }
 
     foreach ($guys as $guy) {
-        $resultArray[$guyscount]['mass'] = $guy['mass'];
-        $resultArray[$guyscount]['height'] = $guy['height'];
-        $resultArray[$guyscount]['chest'] = $guy['chest'];
+        $resultArray[$guysCount]['mass'] = $guy['mass'];
+        $resultArray[$guysCount]['height'] = $guy['height'];
+        $resultArray[$guysCount]['chest'] = $guy['chest'];
 
-        foreach ($indexsArray as $indexMT) {
-            $resultArray = writeIndexToResultArray($indexMT['name'], 
-            $indexMT['formula']((int) $guy['height'], (int) $guy['mass'], (int) $guy['chest']), 
-            (int) $guy['mass'], $resultArray, $guyscount);
+        foreach ($indexsArray as $indexBodyMass) {
+            $resultArray = writeIndexToResultArray($indexBodyMass['name'], 
+            $indexBodyMass['formula']((int) $guy['height'], (int) $guy['mass'], (int) $guy['chest']), 
+            (int) $guy['mass'], $resultArray, $guysCount);
         }
-        $guyscount++;
+        $guysCount++;
     }
 }
 
