@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+declare (strict_types=1);
 require_once 'functions.php';
 
 $result = fopen("result.csv", "w+");
@@ -10,7 +10,7 @@ $guysCount++;
 $err = false;
 if (count($argv) > 1) {
     for ($i = 1; $i < count($argv); $i++) {
-        if ((float) $argv[$i] === 0) {
+        if ((float)$argv[$i] === 0) {
             echo "Введите ненулевое число";
             $err = true;
         }
@@ -34,12 +34,12 @@ if (count($argv) > 1) {
 }
 
 foreach ($guys as $guy) {
-    $resultArray[$guysCount] = [ 'mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
+    $resultArray[$guysCount] = ['mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
 
     foreach ($indexsArray as $indexBodyMass) {
-        $resultArray = writeIndexToResultArray($indexBodyMass['name'], 
-        $indexBodyMass['formula']((int) $guy['height'], (int) $guy['mass'], (int) $guy['chest']), 
-        (int) $guy['mass'], $resultArray, $guysCount);
+        $resultArray = writeIndexToResultArray($indexBodyMass['name'],
+            $indexBodyMass['formula']((int)$guy['height'], (int)$guy['mass'], (int)$guy['chest']),
+            (int)$guy['mass'], $resultArray, $guysCount);
     }
 
     $guysCount++;

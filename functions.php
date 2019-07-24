@@ -4,43 +4,43 @@ const TABLE_COL = 3;
 
 $indexsArray = [
     [
-        'name' => 'IMT', 
+        'name' => 'IMT',
         'formula' => function (int $height, int $mass) {
             return round($mass * 10000 / ($height ** 2), 2);
         }
     ],
     [
-        'name' => 'Brok', 
+        'name' => 'Brok',
         'formula' => function (int $height) {
             return round($height - 100, 2);
         }
     ],
     [
-        'name' => 'Breytman', 
+        'name' => 'Breytman',
         'formula' => function (int $height) {
             return round($height * 0.7 - 50, 2);
         }
     ],
     [
-        'name' => 'Berngard', 
+        'name' => 'Berngard',
         'formula' => function (int $height, int $mass, int $chest) {
             return round($chest * $height / 240, 2);
         }
     ],
     [
-        'name' => 'Davenport', 
+        'name' => 'Davenport',
         'formula' => function (int $height, int $mass) {
             return round($mass * 1000 / ($height ** 2), 2);
         }
     ],
     [
-        'name' => 'Noorden', 
+        'name' => 'Noorden',
         'formula' => function (int $height) {
             return round($height * 0.42, 2);
         }
     ],
     [
-        'name' => 'Tatony', 
+        'name' => 'Tatony',
         'formula' => function (int $height) {
             return round($height - 100 - ($height - 100) / 20, 2);
         }
@@ -51,7 +51,6 @@ function readGuys(): array
 {
     $guys = [];
     $row = 0;
-    $file = [];
     if (($file = fopen('guys.csv', 'r')) !== false) {
         while (($line = fgetcsv($file, 1000, ',')) !== false) {
             for ($i = 0; $i < TABLE_COL; $i++) {
