@@ -76,14 +76,14 @@ function readARGV(array $argv): array
     $row = 0;
     $guys = [];
     for ($i = 1; $i < count($argv); $i++) {
-        if ($i % TABLE_COL == 1) {
+        if ($i % TABLE_COL === 1) {
             $guys[$row]['mass'] = $argv[$i];
-        } elseif ($i % TABLE_COL == 2) {
+        } elseif ($i % TABLE_COL === 2) {
             $guys[$row]['height'] = $argv[$i];
         } else {
             $guys[$row]['chest'] = $argv[$i];
         }
-        if ($i % TABLE_COL == 0) {
+        if ($i % TABLE_COL === 0) {
             $row++;
         }
     }
@@ -120,7 +120,7 @@ function writeIndexToResultArray(string $name, float $index, int $mass, array $r
 
 function norm(string $name, float $index, int $mass): string
 {
-    if ($name == 'IMT') {
+    if ($name === 'IMT') {
         $norm = normIMT($index);
     } elseif ($name == 'Davenport') {
         $norm = normDavenport($index);

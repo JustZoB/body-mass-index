@@ -6,7 +6,7 @@ $guys = [];
 
 $result = fopen("result.csv", "w+");
 $guyscount = 0;
-$resultArray = addHeaders($indexsArray, $guyscount);
+$resultArray = addTableHeaders($indexsArray, $guyscount);
 $guyscount++;
 
 $err = false;
@@ -20,12 +20,12 @@ if (!$err) {
     $guys = readARGV($argv)['guys'];
     $row = readARGV($argv)['row'];
 
-    if (count($argv) == 1) {
+    if (count($argv) === 1) {
         echo "Введите свои массу, рост и окружность грудной клетки. \n";
-    } elseif ((count($argv) - 1) % TABLE_COL == 1) {
+    } elseif ((count($argv) - 1) % TABLE_COL === 1) {
         echo "Введите свои рост и окружность грудной клетки. \n";
         unset($guys[$row]);
-    } elseif ((count($argv) - 1) % TABLE_COL == 2) {
+    } elseif ((count($argv) - 1) % TABLE_COL === 2) {
         echo "Введите свою окружность грудной клетки. \n";
         unset($guys[$row]);
     }

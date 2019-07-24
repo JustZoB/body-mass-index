@@ -4,13 +4,13 @@ require_once 'functions.php';
 
 $result = fopen("result.csv", "w+");
 $guyscount = 0;
-$resultArray = addHeaders($indexsArray, $guyscount);
+$resultArray = addTableHeaders($indexsArray, $guyscount);
 $guyscount++;
 
 $err = false;
 if (count($argv) > 1) {
     for ($i = 1; $i < count($argv); $i++) {
-        if ((float) $argv[$i] == 0) {
+        if ((float) $argv[$i] === 0) {
             echo "Введите ненулевое число";
             $err = true;
         }
@@ -20,10 +20,10 @@ if (count($argv) > 1) {
         $guys = readARGV($argv)['guys'];
         $row = readARGV($argv)['row'];
 
-        if ((count($argv) - 1) % TABLE_COL == 1) {
+        if ((count($argv) - 1) % TABLE_COL === 1) {
             echo "Введите свои рост и окружность грудной клетки.\n";
             unset($guys[$row]);
-        } elseif ((count($argv) - 1) % TABLE_COL == 2) {
+        } elseif ((count($argv) - 1) % TABLE_COL === 2) {
             echo "Введите свою окружность грудной клетки.\n";
             unset($guys[$row]);
         }

@@ -4,7 +4,7 @@ require_once 'functions.php';
 
 $result = fopen("result.csv", "w+");
 $guyscount = 0;
-$resultArray = addHeaders($indexsArray, $guyscount);
+$resultArray = addTableHeaders($indexsArray, $guyscount);
 $guyscount++;
 foreach (readGuys() as $guy) {
     $resultArray[$guyscount]['mass'] = $guy['mass'];
