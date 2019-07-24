@@ -33,9 +33,7 @@ if (count($argv) > 1) {
 }
 
 foreach ($guys as $guy) {
-    $resultArray[$guysCount]['mass'] = $guy['mass'];
-    $resultArray[$guysCount]['height'] = $guy['height'];
-    $resultArray[$guysCount]['chest'] = $guy['chest'];
+    $resultArray[$guysCount] = [ 'mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
 
     foreach ($indexsArray as $indexBodyMass) {
         $resultArray = writeIndexToResultArray($indexBodyMass['name'], 

@@ -164,7 +164,7 @@ function normIMT(float $index): string
             return 'Очень резкое ожирение';
             break;
         default:
-            return 'Норма';
+            return 'Неправильное значение';
             break;
     }
 }

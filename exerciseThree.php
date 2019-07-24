@@ -7,9 +7,7 @@ $guysCount = 0;
 $resultArray = addTableHeaders($indexsArray, $guysCount);
 $guysCount++;
 foreach (readGuys() as $guy) {
-    $resultArray[$guysCount]['mass'] = $guy['mass'];
-    $resultArray[$guysCount]['height'] = $guy['height'];
-    $resultArray[$guysCount]['chest'] = $guy['chest'];
+    $resultArray[$guysCount] = [ 'mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
 
     foreach ($indexsArray as $indexMT) {
         $resultArray = writeIndexToResultArray($indexMT['name'], 

@@ -7,9 +7,7 @@ if (isset($_POST['mass']) && isset($_POST['height']) && isset($_POST['chest'])) 
     $resultArray = addTableHeaders($indexsArray, 0);
     $guysCount = 1;
 
-    $resultArray[$guysCount]['mass'] = (int) $_POST['mass'];
-    $resultArray[$guysCount]['height'] = (int) $_POST['height'];
-    $resultArray[$guysCount]['chest'] = (int) $_POST['chest'];
+    $resultArray[$guysCount] = [ 'mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
 
     foreach ($indexsArray as $indexBodyMass) {
         $resultArray = writeIndexToResultArray($indexBodyMass['name'], 
