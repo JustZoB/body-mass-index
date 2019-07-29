@@ -200,3 +200,12 @@ function checkArguments($arguments) : array
 
     return ['guys' => $guys, 'err' => false];
 }
+
+function validSubmit($resultArray) {
+    foreach($resultArray as $arg) {
+        if ($arg == '' || $arg > 0) {
+            return false;
+        }
+        return true;
+    }
+}
