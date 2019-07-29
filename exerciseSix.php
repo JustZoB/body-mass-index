@@ -24,8 +24,15 @@
     function SubmitFormData() {
         let mass = $("#mass").val(),
             height = $("#height").val(),
-            chest = $("#chest").val();
-        $.post("submit.php", {mass: mass, height: height, chest: chest});
+            chest = $("#chest").val(),
+            m = $.isNumeric(mass),
+            h = $.isNumeric(height),
+            c = $.isNumeric(chest);
+        if (mass < 0 || height < 0 || chest < 0 || !m || !h || !c) {
+            alert("Введите ненулевые положительные числа");
+        } else {
+            $.post("submit.php", {mass: mass, height: height, chest: chest});
+        }
     }
 </script>
 </html>
