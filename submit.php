@@ -1,5 +1,6 @@
 <?php
 require_once 'functions.php';
+
 $result = fopen("result.csv", "w+");
 $resultArray = addTableHeaders($indexsArray, 0);
 $guysCount = 1;
@@ -26,3 +27,5 @@ foreach ($resultArray as $resultArrayString) {
     fputcsv($result, $resultArrayString);
 }
 fclose($result);
+
+return $resultArray;
