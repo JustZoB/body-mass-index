@@ -3,9 +3,8 @@ declare (strict_types=1);
 require_once 'functions.php';
 
 $result = fopen("result.csv", "w+");
-$guysCount = 0;
-$resultArray = addTableHeaders($indexsArray, $guysCount);
-$guysCount++;
+$resultArray = addTableHeaders($indexsArray, 0);
+$line++;
 
 $err = false;
 if (count($argv) > 1) {
@@ -18,15 +17,15 @@ if (count($argv) > 1) {
 
 if (!$err) {
     foreach ($guys as $guy) {
-        $resultArray[$guysCount] = ['mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
+        $resultArray[$line] = ['mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
 
         foreach ($indexsArray as $indexBodyMass) {
             $resultArray = writeIndexToResultArray($indexBodyMass['name'],
                 $indexBodyMass['formula']((int)$guy['height'], (int)$guy['mass'], (int)$guy['chest']),
-                (int)$guy['mass'], $resultArray, $guysCount);
+                (int)$guy['mass'], $resultArray, $line);
         }
 
-        $guysCount++;
+        $line++;
     }
 }
 
