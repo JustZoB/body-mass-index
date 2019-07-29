@@ -1,7 +1,6 @@
 <?php
 const TABLE_COL = 3;
 
-
 $indexsArray = [
     [
         'name' => 'IMT',
