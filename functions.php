@@ -53,9 +53,9 @@ function readGuys(): array
     if (($file = fopen('guys.csv', 'r')) !== false) {
         while (($line = fgetcsv($file, 1000, ',')) !== false) {
             for ($i = 0; $i < TABLE_COL; $i++) {
-                if ($i == 0) {
+                if ($i === 0) {
                     $guys[$row]['mass'] = $line[$i];
-                } elseif ($i == 1) {
+                } elseif ($i === 1) {
                     $guys[$row]['height'] = $line[$i];
                 } else {
                     $guys[$row]['chest'] = $line[$i];
@@ -120,7 +120,7 @@ function norm(string $name, float $index, int $mass): string
 {
     if ($name === 'IMT') {
         $norm = normIndexBodyMass($index);
-    } elseif ($name == 'Davenport') {
+    } elseif ($name === 'Davenport') {
         $norm = normDavenport($index);
     } else {
         $norm = normOther($index, $mass);

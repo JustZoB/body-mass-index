@@ -5,17 +5,16 @@ $result = fopen("result.csv", "w+");
 $resultArray = addTableHeaders($indexsArray, 0);
 $guysCount = 1;
 
-$resultArray[$guysCount] =
-    [
-        'mass' => $_POST['mass'],
-        'height' => $_POST['height'],
-        'chest' => $_POST['chest']
-    ];
+$resultArray[$guysCount] = [
+    'mass' => $_POST['mass'],
+    'height' => $_POST['height'],
+    'chest' => $_POST['chest']
+];
 
-foreach ($indexsArray as $indexBodyMass) {
+foreach ($indexsArray as $index) {
     $resultArray = writeIndexToResultArray(
-        $indexBodyMass['name'],
-        $indexBodyMass['formula'](
+        $index['name'],
+        $index['formula'](
             (int)$_POST['height'],
             (int)$_POST['mass'],
             (int)$_POST['chest']),
