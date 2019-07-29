@@ -46,7 +46,7 @@ $indexsArray = [
     ]
 ];
 
-function readGuys(): array
+function readGuys() : array
 {
     $guys = [];
     $row = 0;
@@ -69,7 +69,7 @@ function readGuys(): array
     return $guys;
 }
 
-function readArgv(array $argv): array
+function readArgv(array $argv) : array
 {
     $row = 0;
     $guys = [];
@@ -89,7 +89,7 @@ function readArgv(array $argv): array
     return ['guys' => $guys, 'row' => $row];
 }
 
-function addTableHeaders(array $indexsArray, int $guysCount): array
+function addTableHeaders(array $indexsArray, int $guysCount) : array
 {
     $resultArray[$guysCount] = ['Mass', 'Height', 'Chest'];
     foreach ($indexsArray as $indexBodyMass) {
@@ -106,7 +106,7 @@ function showIndex(string $name, float $index, int $mass)
     echo "Index $name: $index, Norm $name: $norm \n";
 }
 
-function writeIndexToResultArray(string $name, float $index, int $mass, array $resultArray, int $guysCount): array
+function writeIndexToResultArray(string $name, float $index, int $mass, array $resultArray, int $guysCount) : array
 {
     $norm = norm($name, $index, $mass);
 
@@ -116,7 +116,7 @@ function writeIndexToResultArray(string $name, float $index, int $mass, array $r
     return $resultArray;
 }
 
-function norm(string $name, float $index, int $mass): string
+function norm(string $name, float $index, int $mass) : string
 {
     if ($name === 'IMT') {
         $norm = normIndexBodyMass($index);
@@ -128,7 +128,7 @@ function norm(string $name, float $index, int $mass): string
     return $norm;
 }
 
-function normOther(float $index, int $mass): string
+function normOther(float $index, int $mass) : string
 {
     if ((($index - 15) > $mass) || (($index + 15) < $mass)) {
         return '-';
@@ -137,7 +137,7 @@ function normOther(float $index, int $mass): string
     }
 }
 
-function normIndexBodyMass(float $index): string
+function normIndexBodyMass(float $index) : string
 {
     switch ($index) {
         case ($index <= 16):
@@ -167,11 +167,35 @@ function normIndexBodyMass(float $index): string
     }
 }
 
-function normDavenport(float $index): string
+function normDavenport(float $index) : string
 {
     if (($index > 3) || ($index < 1)) {
         return '-';
     } else {
         return '+';
     }
+}
+
+function checkArguments($arguments) : array
+{
+    for ($i = 1; $i < count($arguments); $i++) {
+        if ((float)$arguments[$i] == 0) {
+            echo "Введите ненулевое число \n";
+            return ['guys' => [], 'err' => true];
+        }
+    }
+
+    $returnedArray = readArgv($arguments);
+    $guys = $returnedArray['guys'];
+    $row = $returnedArray['row'];
+
+    if ((count($arguments) - 1) % TABLE_COL === 1) {
+        echo "Введите свои рост и окружность грудной клетки.\n";
+        unset($guys[$row]);
+    } elseif ((count($arguments) - 1) % TABLE_COL === 2) {
+        echo "Введите свою окружность грудной клетки.\n";   
+        unset($guys[$row]);
+    }
+
+    return ['guys' => $guys, 'err' => false];
 }
