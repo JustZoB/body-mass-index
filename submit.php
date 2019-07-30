@@ -4,7 +4,7 @@ require_once 'functions.php';
 $result = fopen("result.csv", "w+");
 $resultArray = addTableHeaders($indexsArray, 0);
 $line = 1;
-if (isset($_POST['mass']) && $_POST['height'] && $_POST['chest']) {
+if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) {
     $valid = validSubmit([(float)$_POST['mass'], (float)$_POST['height'], (float)$_POST['chest']]);
 }
 
