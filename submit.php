@@ -4,14 +4,16 @@ require_once 'functions.php';
 $result = fopen("result.csv", "w+");
 $resultArray = addTableHeaders($indexsArray, 0);
 $line = 1;
+$valid = validSubmit([(float)$_POST['mass'], (float)$_POST['height'], (float)$_POST['chest']]);
 
-$resultArray[$line] = [
-    'mass' => (float)$_POST['mass'],
-    'height' => (float)$_POST['height'],
-    'chest' => (float)$_POST['chest']
-];
 
-if (validSubmit($resultArray)) {
+if ($valid) {
+    $resultArray[$line] = [
+        'mass' => (float)$_POST['mass'],
+        'height' => (float)$_POST['height'],
+        'chest' => (float)$_POST['chest']
+    ];
+
     foreach ($indexsArray as $index) {
         $resultArray = writeIndexToResultArray(
             $index['name'],
