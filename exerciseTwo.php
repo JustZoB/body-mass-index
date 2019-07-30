@@ -2,5 +2,5 @@
 declare (strict_types=1);
 require_once 'functions.php';
 
-$resultArray = arrayOfPeopleToResultArray(readPeople(), []);
-resultArrayToResultCsvFile($resultArray);
+$resultArray = peopleToArray(readPeople(), []);
+arrayToCsv($resultArray);

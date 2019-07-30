@@ -144,7 +144,7 @@ function checkArgv($arguments) : array
     return $people;
 }
 
-function arrayOfPeopleToConsole(array $people)
+function peopleToConsole(array $people)
 {
     $indexsArray = arrayOfIndexs();
     foreach ($people as $human) {
@@ -162,7 +162,7 @@ function showIndex(string $name, float $index, float $mass)
     echo "Index $name: $index, Norm $name: $norm \n";
 }
 
-function arrayOfPeopleToResultArray(array $people, array $resultArray) : array
+function peopleToArray(array $people, array $resultArray) : array
 {
     $indexsArray = arrayOfIndexs();
     $line = 1;
@@ -170,7 +170,7 @@ function arrayOfPeopleToResultArray(array $people, array $resultArray) : array
         $resultArray[$line] = ['mass' => $human['mass'], 'height' => $human['height'], 'chest' => $human['chest']];
 
         foreach ($indexsArray as $indexMT) {
-            $resultArray = writeIndexToResultArray(
+            $resultArray = indexesToArray(
                 $indexMT['name'], 
                 $indexMT['formula']((float)$human['height'], (float)$human['mass'], (float)$human['chest']), 
                 (float)$human['mass'], 
@@ -182,7 +182,7 @@ function arrayOfPeopleToResultArray(array $people, array $resultArray) : array
     return $resultArray;
 }
 
-function writeIndexToResultArray(string $name, float $index, float $mass, array $resultArray, int $line) : array
+function indexesToArray(string $name, float $index, float $mass, array $resultArray, int $line) : array
 {
     $norm = norm($name, $index, $mass);
 
@@ -264,7 +264,7 @@ function validSubmit(array $resultArray) : bool
     return true;
 }
 
-function resultArrayToResultCsvFile(array $resultArray) 
+function arrayToCsv(array $resultArray) 
 {
     $result = fopen("result.csv", "w+");
     writeInFile($result, $resultArray);

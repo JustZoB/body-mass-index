@@ -4,6 +4,6 @@ require_once 'functions.php';
 
 $resultArray = addTableHeaders();
 if (validArgv($argv)) {
-    $resultArray = arrayOfPeopleToResultArray(checkArgv($argv), $resultArray);
+    $resultArray = peopleToArray(checkArgv($argv), $resultArray);
 }
-resultArrayToResultCsvFile($resultArray);
+arrayToCsv($resultArray);

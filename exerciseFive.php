@@ -10,5 +10,5 @@ if (count($argv) > 1) {
 } else {
     $people = readPeople();
 }
-$resultArray = arrayOfPeopleToResultArray($people, $resultArray);
-resultArrayToResultCsvFile($resultArray);
+$resultArray = peopleToArray($people, $resultArray);
+arrayToCsv($resultArray);

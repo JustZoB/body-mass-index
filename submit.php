@@ -10,8 +10,8 @@ if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) {
             'height' => (float)$_POST['height'],
             'chest' => (float)$_POST['chest']
         ];
-        $resultArray = arrayOfPeopleToResultArray($people, $resultArray);
+        $resultArray = peopleToArray($people, $resultArray);
     }   
 }
 
-resultArrayToResultCsvFile($resultArray);
+arrayToCsv($resultArray);
