@@ -3,8 +3,8 @@ declare (strict_types=1);
 require_once 'functions.php';
 
 $result = fopen("result.csv", "w+");
-$resultArray = addTableHeaders($indexsArray, 0);
-$line++;
+$resultArray = addTableHeaders($indexsArray);
+$line = 1;
 
 $err = false;
 if (count($argv) > 1) {
@@ -29,7 +29,5 @@ if (!$err) {
     }
 }
 
-foreach ($resultArray as $resultArrayString) {
-    fputcsv($result, $resultArrayString);
-}
+writeInFile($result, $resultArray);
 fclose($result);

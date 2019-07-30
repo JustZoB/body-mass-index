@@ -3,7 +3,7 @@ declare (strict_types=1);
 require_once 'functions.php';
 
 $result = fopen("result.csv", "w+");
-$resultArray = addTableHeaders($indexsArray, 0);
+$resultArray = addTableHeaders($indexsArray);
 $line = 1;
 
 foreach (readGuys() as $guy) {
@@ -17,7 +17,5 @@ foreach (readGuys() as $guy) {
     $line++;
 }
 
-foreach ($resultArray as $resultArrayString) {
-    fputcsv($result, $resultArrayString);
-}
+writeInFile($result, $resultArray);
 fclose($result);

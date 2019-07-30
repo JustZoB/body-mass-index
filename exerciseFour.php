@@ -5,7 +5,7 @@ require_once 'functions.php';
 $guys = [];
 
 $result = fopen("result.csv", "w+");
-$resultArray = addTableHeaders($indexsArray, 0);
+$resultArray = addTableHeaders($indexsArray);
 $line = 1;
 
 $err = false;
@@ -42,7 +42,5 @@ if (!$err) {
     }
 }
 
-foreach ($resultArray as $resultArrayString) {
-    fputcsv($result, $resultArrayString);
-}
+writeInFile($result, $resultArray);
 fclose($result);

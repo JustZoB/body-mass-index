@@ -5,7 +5,7 @@ require_once 'functions.php';
 $result = fopen("result.csv", "w+");
 $line = 0;
 $resultArray = [];
-
+var_dump($result);
 foreach (readGuys() as $guy) {
     $resultArray[$line] = ['mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
 
@@ -17,7 +17,5 @@ foreach (readGuys() as $guy) {
     $line++;
 }
 
-foreach ($resultArray as $resultArrayString) {
-    fputcsv($result, $resultArrayString);
-}
+writeInFile($result, $resultArray);
 fclose($result);

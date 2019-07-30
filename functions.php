@@ -89,11 +89,11 @@ function readArgv(array $argv) : array
     return ['guys' => $guys, 'row' => $row];
 }
 
-function addTableHeaders(array $indexsArray, int $line) : array
+function addTableHeaders(array $indexsArray) : array
 {
-    $resultArray[$line] = ['Mass', 'Height', 'Chest'];
+    $resultArray[0] = ['Mass', 'Height', 'Chest'];
     foreach ($indexsArray as $indexBodyMass) {
-        array_push($resultArray[$line], 
+        array_push($resultArray[0], 
         $indexBodyMass['name'], 
         $indexBodyMass['name'] . ' norm');
     }
@@ -115,6 +115,12 @@ function writeIndexToResultArray(string $name, float $index, int $mass, array $r
     $resultArray[$line]['Norm ' . $name] = $norm;
 
     return $resultArray;
+}
+
+function writeInFile(stream $result, array $resultArray) {
+    foreach ($resultArray as $resultArrayString) {
+        fputcsv($result, $resultArrayString);
+    }
 }
 
 function norm(string $name, float $index, int $mass) : string
@@ -207,6 +213,7 @@ function validSubmit(array $resultArray) : bool
         if ($arg > 0) {
             return false;
         }
-        return true;
     }
+
+    return true;
 }

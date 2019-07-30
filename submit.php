@@ -2,8 +2,9 @@
 require_once 'functions.php';
 
 $result = fopen("result.csv", "w+");
-$resultArray = addTableHeaders($indexsArray, 0);
+$resultArray = addTableHeaders($indexsArray);
 $line = 1;
+
 if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) {
     if (validSubmit([(float)$_POST['mass'], (float)$_POST['height'], (float)$_POST['chest']])) {
         $resultArray[$line] = [
@@ -26,9 +27,7 @@ if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) {
     }   
 }
 
-foreach ($resultArray as $resultArrayString) {
-    fputcsv($result, $resultArrayString);
-}
+writeInFile($result, $resultArray);
 fclose($result);
 
 return $resultArray;
