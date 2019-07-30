@@ -2,7 +2,7 @@
 declare (strict_types=1);
 require_once 'functions.php';
 
-$guys = [];
+$people = [];
 
 $result = fopen("result.csv", "w+");
 $resultArray = addTableHeaders($indexsArray);
@@ -17,26 +17,26 @@ for ($i = 1; $i < count($argv); $i++) {
 }
 if (!$err) {
     $returnedArray = readArgv($argv);
-    $guys = $returnedArray['guys'];
+    $people = $returnedArray['people'];
     $row = $returnedArray['row'];
 
     if (count($argv) === 1) {
-        echo "Введите свои массу, рост и окружность грудной клетки. \n";
+        echo "Enter your mass, height and chest circumference. \n";
     } elseif (((count($argv) - 1) % TABLE_COL) === 1) {
-        echo "Введите свои рост и окружность грудной клетки. \n";
-        unset($guys[$row]);
+        echo "Enter your свои height and chest circumference. \n";
+        unset($people[$row]);
     } elseif (((count($argv) - 1) % TABLE_COL) === 2) {
-        echo "Введите свою окружность грудной клетки. \n";
-        unset($guys[$row]);
+        echo "Enter your chest circumference. \n";
+        unset($people[$row]);
     }
 
-    foreach ($guys as $guy) {
-        $resultArray[$line] = ['mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
+    foreach ($people as $human) {
+        $resultArray[$line] = ['mass' => $human['mass'], 'height' => $human['height'], 'chest' => $human['chest']];
 
         foreach ($indexsArray as $indexBodyMass) {
             $resultArray = writeIndexToResultArray($indexBodyMass['name'],
-                $indexBodyMass['formula']((int)$guy['height'], (int)$guy['mass'], (int)$guy['chest']),
-                (int)$guy['mass'], $resultArray, $line);
+                $indexBodyMass['formula']((int)$human['height'], (int)$human['mass'], (int)$human['chest']),
+                (int)$human['mass'], $resultArray, $line);
         }
         $line++;
     }

@@ -6,13 +6,13 @@ $result = fopen("result.csv", "w+");
 $resultArray = addTableHeaders($indexsArray);
 $line = 1;
 
-foreach (readGuys() as $guy) {
-    $resultArray[$line] = ['mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
+foreach (readPeople() as $human) {
+    $resultArray[$line] = ['mass' => $human['mass'], 'height' => $human['height'], 'chest' => $human['chest']];
 
     foreach ($indexsArray as $indexMT) {
         $resultArray = writeIndexToResultArray($indexMT['name'],
-            $indexMT['formula']((int)$guy['height'], (int)$guy['mass'], (int)$guy['chest']),
-            (int)$guy['mass'], $resultArray, $line);
+            $indexMT['formula']((int)$human['height'], (int)$human['mass'], (int)$human['chest']),
+            (int)$human['mass'], $resultArray, $line);
     }
     $line++;
 }

@@ -2,20 +2,20 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <title>Индекс массы тела</title>
+    <title>Index body mass</title>
 </head>
 <body>
 <form method="post">
-    Ваш вес: <input type="text" name="mass" id="mass"/><br/>
-    Ваш рост: <input type="text" name="height" id="height"/><br/>
-    Ваша окружнось грудной клетки: <input type="text" name="chest" id="chest"/><br/>
+    Your mass: <input type="text" name="mass" id="mass"/><br/>
+    Your height: <input type="text" name="height" id="height"/><br/>
+    Your chest circumference: <input type="text" name="chest" id="chest"/><br/>
     <input type="submit" id="submitFormData" onclick="SubmitFormData();"/>
 </form>
 
 <?php if (isset($_POST['mass']) && isset($_POST['height']) && isset($_POST['chest'])) : ?>
-    <?= '<p>Вес ' . htmlspecialchars($_POST['mass']) . '<br />' ?>
-    <?= 'Рост ' . htmlspecialchars($_POST['height']) . '<br />' ?>
-    <?= 'Окружнось грудной клетки ' . htmlspecialchars($_POST['chest']) . '</p>' ?>
+    <?= '<p>Mass ' . htmlspecialchars($_POST['mass']) . '<br />' ?>
+    <?= 'Height ' . htmlspecialchars($_POST['height']) . '<br />' ?>
+    <?= 'Chest circumference ' . htmlspecialchars($_POST['chest']) . '</p>' ?>
 <?php endif ?>
 
 </body>
@@ -29,7 +29,7 @@
             h = $.isNumeric(height),
             c = $.isNumeric(chest);
         if (mass < 0 || height < 0 || chest < 0 || !m || !h || !c) {
-            alert("Введите ненулевые положительные числа");
+            alert("Enter nonzero positive numbers.");
         } else {
             $.post("submit.php", {mass: mass, height: height, chest: chest});
         }

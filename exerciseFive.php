@@ -9,20 +9,20 @@ $line = 1;
 $err = false;
 if (count($argv) > 1) {
     $returnedArray = checkArguments($argv);
-    $guys = $returnedArray['guys'];
+    $people = $returnedArray['people'];
     $err = $returnedArray['err'];
 } else {
-    $guys = readGuys();
+    $people = readPeople();
 }
 
 if (!$err) {
-    foreach ($guys as $guy) {
-        $resultArray[$line] = ['mass' => $guy['mass'], 'height' => $guy['height'], 'chest' => $guy['chest']];
+    foreach ($people as $human) {
+        $resultArray[$line] = ['mass' => $human['mass'], 'height' => $human['height'], 'chest' => $human['chest']];
 
         foreach ($indexsArray as $indexBodyMass) {
             $resultArray = writeIndexToResultArray($indexBodyMass['name'],
-                $indexBodyMass['formula']((int)$guy['height'], (int)$guy['mass'], (int)$guy['chest']),
-                (int)$guy['mass'], $resultArray, $line);
+                $indexBodyMass['formula']((int)$human['height'], (int)$human['mass'], (int)$human['chest']),
+                (int)$human['mass'], $resultArray, $line);
         }
 
         $line++;

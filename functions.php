@@ -46,19 +46,19 @@ $indexsArray = [
     ]
 ];
 
-function readGuys() : array
+function readPeople() : array
 {
-    $guys = [];
+    $people = [];
     $row = 0;
-    if (($file = fopen('guys.csv', 'r')) !== false) {
+    if (($file = fopen('people.csv', 'r')) !== false) {
         while (($line = fgetcsv($file, 1000, ',')) !== false) {
             for ($i = 0; $i < TABLE_COL; $i++) {
                 if ($i === 0) {
-                    $guys[$row]['mass'] = $line[$i];
+                    $people[$row]['mass'] = $line[$i];
                 } elseif ($i === 1) {
-                    $guys[$row]['height'] = $line[$i];
+                    $people[$row]['height'] = $line[$i];
                 } else {
-                    $guys[$row]['chest'] = $line[$i];
+                    $people[$row]['chest'] = $line[$i];
                 }
             }
             $row++;
@@ -66,27 +66,27 @@ function readGuys() : array
         fclose($file);
     }
 
-    return $guys;
+    return $people;
 }
 
 function readArgv(array $argv) : array
 {
     $row = 0;
-    $guys = [];
+    $people = [];
     for ($i = 1; $i < count($argv); $i++) {
         if (($i % TABLE_COL) === 1) {
-            $guys[$row]['mass'] = $argv[$i];
+            $people[$row]['mass'] = $argv[$i];
         } elseif (($i % TABLE_COL) === 2) {
-            $guys[$row]['height'] = $argv[$i];
+            $people[$row]['height'] = $argv[$i];
         } else {
-            $guys[$row]['chest'] = $argv[$i];
+            $people[$row]['chest'] = $argv[$i];
         }
         if (($i % TABLE_COL) === 0) {
             $row++;
         }
     }
 
-    return ['guys' => $guys, 'row' => $row];
+    return ['people' => $people, 'row' => $row];
 }
 
 function addTableHeaders(array $indexsArray) : array
@@ -148,28 +148,28 @@ function normIndexBodyMass(float $index) : string
 {
     switch ($index) {
         case ($index <= 16):
-            return 'Выраженный дефицит';
+            return 'Severe deficiency';
             break;
         case ($index <= 18.5):
-            return 'Дефицит';
+            return 'Deficiency';
             break;
         case ($index <= 25):
-            return 'Норма';
+            return 'Norm';
             break;
         case ($index <= 30):
             return 'Избыточная';
             break;
         case ($index <= 35):
-            return 'Ожирение';
+            return 'Obesity';
             break;
         case ($index <= 40):
-            return 'Резкое ожирение';
+            return 'Severe obesity';
             break;
         case ($index > 40):
-            return 'Очень резкое ожирение';
+            return 'Very severe obesity';
             break;
         default:
-            return 'Неправильное значение';
+            return 'Incorrect value';
             break;
     }
 }
@@ -187,24 +187,24 @@ function checkArguments($arguments) : array
 {
     for ($i = 1; $i < count($arguments); $i++) {
         if ((float)$arguments[$i] == 0) {
-            echo "Введите ненулевое число \n";
-            return ['guys' => [], 'err' => true];
+            echo "Enter nonzero positive numbers. \n";
+            return ['people' => [], 'err' => true];
         }
     }
 
     $returnedArray = readArgv($arguments);
-    $guys = $returnedArray['guys'];
+    $people = $returnedArray['people'];
     $row = $returnedArray['row'];
 
     if ((count($arguments) - 1) % TABLE_COL === 1) {
-        echo "Введите свои рост и окружность грудной клетки.\n";
-        unset($guys[$row]);
+        echo "Enter your height and chest circumference.\n";
+        unset($people[$row]);
     } elseif ((count($arguments) - 1) % TABLE_COL === 2) {
-        echo "Введите свою окружность грудной клетки.\n";   
-        unset($guys[$row]);
+        echo "Enter your chest circumference.\n";   
+        unset($people[$row]);
     }
 
-    return ['guys' => $guys, 'err' => false];
+    return ['people' => $people, 'err' => false];
 }
 
 function validSubmit(array $resultArray) : bool
