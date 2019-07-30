@@ -203,7 +203,7 @@ function checkArguments($arguments) : array
 
 function validSubmit($resultArray) {
     foreach($resultArray as $arg) {
-        if ($arg == '' || $arg > 0) {
+        if ($arg > 0) {
             return false;
         }
         return true;
