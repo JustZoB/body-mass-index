@@ -48,11 +48,11 @@ function arrayOfIndexs() : array {
     ];
 }
 
-function readPeople() : array
+function readPeople($path) : array
 {
     $people = [];
     $row = 0;
-    if (($file = fopen('people.csv', 'r')) !== false) {
+    if (($file = fopen($path, 'r')) !== false) {
         while (($line = fgetcsv($file, 1000, ',')) !== false) {
             for ($i = 0; $i < TABLE_COL; $i++) {
                 if ($i === 0) {

@@ -8,7 +8,7 @@ if (count($argv) > 1) {
         $people = checkArgv($argv);
     }
 } else {
-    $people = readPeople();
+    $people = readPeople('people.csv');
 }
 $resultArray = peopleToArray($people, $resultArray);
 arrayToCsv($resultArray);
