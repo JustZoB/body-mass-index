@@ -270,7 +270,7 @@ function arrayToCsv(array $resultArray)
     fclose($result);
 }
 
-function uploadFile($fileName, $fileTmpPath) : string
+function uploadFile(string $fileName, string $fileTmpPath) : string
 {
     $filePath = './uploaded_files/' . $fileName;
     move_uploaded_file($fileTmpPath, $filePath);
