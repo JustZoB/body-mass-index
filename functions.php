@@ -56,9 +56,7 @@ function readCsv(string $path) : array
         for ($i = 0; $i < sizeof(file($path)); $i++) {
             $line = fgetcsv($file, 1000, ',');
             if ($i === 0) {
-                for ($j = 0; $j < count($line); $j++) {
-                    $heads[] = $line[$j];
-                }
+                $heads = $line;
             } else {
                 for ($j = 0; $j < count($line); $j++) {
                     $array[$i - 1][$heads[$j]] = $line[$j];
