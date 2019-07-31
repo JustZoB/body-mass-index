@@ -1,9 +1,8 @@
 <?php
-const TABLE_COL = 3;
 
-function arrayOfIndexs() : array
+function initIndexs() : array
 {
-    return $indexsArray = [
+    return [
         [
             'name' => 'IMT',
             'formula' => function (float $height, float $mass) {
@@ -49,57 +48,44 @@ function arrayOfIndexs() : array
     ];
 }
 
-function readPeople($path) : array
+function readCsv(string $path) : array
 {
-    $people = [];
-    $row = 0;
+    $array = [];
     if (($file = fopen($path, 'r')) !== false) {
-        while (($line = fgetcsv($file, 1000, ',')) !== false) {
-            for ($i = 0; $i < TABLE_COL; $i++) {
-                if ($i === 0) {
-                    $people[$row]['mass'] = $line[$i];
-                } elseif ($i === 1) {
-                    $people[$row]['height'] = $line[$i];
-                } else {
-                    $people[$row]['chest'] = $line[$i];
+        $heads = [];
+        for ($i = 0; $i < sizeof(file($path)); $i++) {
+            $line = fgetcsv($file, 1000, ',');
+            if ($i === 0) {
+                for ($j = 0; $j < count($line); $j++) {
+                    $heads[] = $line[$j];
+                }
+            } else {
+                for ($j = 0; $j < count($line); $j++) {
+                    $array[$i - 1][$heads[$j]] = $line[$j];
                 }
             }
-            $row++;
         }
         fclose($file);
     }
-
-    return $people;
+    return $array;
 }
 
-function readArgv(array $argv) : array
+function readArgv(array $argv, array $heads) : array
 {
     $row = 0;
-    $people = [];
-    for ($i = 1; $i < count($argv); $i++) {
-        if (($i % TABLE_COL) === 1) {
-            $people[$row]['mass'] = $argv[$i];
-        } elseif (($i % TABLE_COL) === 2) {
-            $people[$row]['height'] = $argv[$i];
-        } else {
-            $people[$row]['chest'] = $argv[$i];
-        }
-        if (($i % TABLE_COL) === 0) {
+    $array = [];
+    for ($i = 0; $i < count($argv); $i++) {
+        $elem = ($i) % count($heads);
+        $array[$row][$heads[$elem]] = $argv[$i];
+        if ($elem === count($heads) - 1) {
             $row++;
         }
     }
 
-    return ['people' => $people, 'row' => $row];
+    return ['rows' => $array, 'lineCounts' => $row];
 }
 
-function writeInFile($result, array $resultArray)
-{
-    foreach ($resultArray as $resultArrayString) {
-        fputcsv($result, $resultArrayString);
-    }
-}
-
-function validArgv($arguments) : bool
+function validArgv(array $arguments) : bool
 {
     for ($i = 1; $i < count($arguments); $i++) {
         if ((float)$arguments[$i] == 0) {
@@ -112,78 +98,70 @@ function validArgv($arguments) : bool
     return true;
 }
 
-function checkArgv($arguments) : array
+function getArgv(array $arguments) : array
 {
-    $arrayArgv = readArgv($arguments);
-    $people = $arrayArgv['people'];
-    $row = $arrayArgv['row'];
+    array_shift($arguments);
+    $heads = ['mass', 'height', 'chest'];
 
-    if (count($arguments) === 1) {
+    $arrayArgv = readArgv($arguments, $heads);
+    $array = $arrayArgv['rows'];
+    $lineCounts = $arrayArgv['lineCounts'];
+
+    if (count($arguments) === 0) {
         echo "Enter your mass, height and chest circumference. \n";
-    } elseif (((count($arguments) - 1) % TABLE_COL) === 1) {
+    } elseif (((count($arguments)) % count($heads)) === 1) {
         echo "Enter your height and chest circumference. \n";
-        unset($people[$row]);
-    } elseif (((count($arguments) - 1) % TABLE_COL) === 2) {
+        unset($array[$lineCounts]);
+    } elseif (((count($arguments)) % count($heads)) === 2) {
         echo "Enter your chest circumference. \n";
-        unset($people[$row]);
+        unset($array[$lineCounts]);
+    } else {
+        echo "Something went wrong. \n";
     }
+    echo "Numbers of lines $lineCounts \n";
 
-    return $people;
+    return $array;
 }
 
-function peopleToConsole(array $people)
+function getResultArray(array $array, bool $headers) : array
 {
-    $indexsArray = arrayOfIndexs();
-    foreach ($people as $human) {
-        echo "Mass: " . $human['mass'] . ", Height: " . $human['height'] . ", Chest circumference: " . $human['chest'] . "\n";
-        foreach ($indexsArray as $indexMT) {
-            showIndex($indexMT['name'], $indexMT['formula']((int)$human['height'],
-                (int)$human['mass'], (int)$human['chest']), (int)$human['mass']);
-        }
-    }
-}
-
-function showIndex(string $name, float $index, float $mass)
-{
-    $norm = norm($name, $index, $mass);
-    echo "Index $name: $index, Norm $name: $norm \n";
-}
-
-function peopleToArray(array $people, bool $headers) : array
-{
-    $indexsArray = arrayOfIndexs();
+    $indexsArray = initIndexs();
     $resultArray = [];
     $line = 0;
+    
+    foreach ($array as $item) {
+        $columns = array_keys(reset($array));
+        for ($i = 0; $i < count($columns); $i++) {
+            $resultArray[$line][$columns[$i]] = $item[$columns[$i]];
+        }
 
-    foreach ($people as $human) {
-        $resultArray[$line] = ['mass' => $human['mass'], 'height' => $human['height'], 'chest' => $human['chest']];
+        $mass = (float)$item['mass'];
+        $height = (float)$item['height'];
+        $chest = (float)$item['chest'];
 
-        foreach ($indexsArray as $indexMT) {
-            $resultArray = indexesToArray(
-                $indexMT['name'],
-                $indexMT['formula']((float)$human['height'], (float)$human['mass'], (float)$human['chest']),
-                (float)$human['mass'],
-                $resultArray,
-                $line);
+        foreach ($indexsArray as $indexItem) {
+            $resultArray = setIndex(
+                $indexItem['name'], 
+                $indexItem['formula']($height, $mass, $chest), 
+                $mass, $resultArray, $line);
         }
         $line++;
     }
 
-    if ($headers) {
-        $arrayKeys = array_keys($resultArray[1]);
+    if (($headers) && (!empty($resultArray))){
+        $arrayKeys = array_keys(reset($resultArray));
         $head = [];
         foreach ($arrayKeys as $key) {
             $head[] = $key;
         }
         array_unshift($resultArray, $head);
     }
-
     return $resultArray;
 }
 
-function indexesToArray(string $name, float $index, float $mass, array $resultArray, int $line) : array
+function setIndex(string $name, float $index, float $mass, array $resultArray, int $line) : array
 {
-    $norm = norm($name, $index, $mass);
+    $norm = getNorm($name, $index, $mass);
 
     $resultArray[$line][$name] = $index;
     $resultArray[$line]['Norm ' . $name] = $norm;
@@ -191,20 +169,47 @@ function indexesToArray(string $name, float $index, float $mass, array $resultAr
     return $resultArray;
 }
 
-function norm(string $name, float $index, float $mass) : string
+function validSubmit(array $resultArray) : bool
+{
+    foreach ($resultArray as $arg) {
+        if ($arg <= 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function writeCsv(array $resultArray)
+{
+    $result = fopen("result.csv", "w+");
+    foreach ($resultArray as $line) {
+        fputcsv($result, $line);
+    }
+    fclose($result);
+}
+
+function uploadFile(string $fileName, string $fileTmpPath) : string
+{
+    $filePath = './uploaded_files/' . $fileName;
+    move_uploaded_file($fileTmpPath, $filePath);
+    return $filePath;
+}
+
+function getNorm(string $name, float $index, float $mass) : string
 {
     if ($name === 'IMT') {
-        $norm = normIndexBodyMass($index);
+        $norm = getNormIndexBodyMass($index);
     } elseif ($name === 'Davenport') {
-        $norm = normDavenport($index);
+        $norm = getNormDavenport($index);
     } else {
-        $norm = normOther($index, $mass);
+        $norm = getNormOther($index, $mass);
     }
 
     return $norm;
 }
 
-function normOther(float $index, float $mass) : string
+function getNormOther(float $index, float $mass) : string
 {
     if ((($index - 15) > $mass) || (($index + 15) < $mass)) {
         return '-';
@@ -213,7 +218,7 @@ function normOther(float $index, float $mass) : string
     }
 }
 
-function normIndexBodyMass(float $index) : string
+function getNormIndexBodyMass(float $index) : string
 {
     switch ($index) {
         case ($index <= 16):
@@ -226,7 +231,7 @@ function normIndexBodyMass(float $index) : string
             return 'Norm';
             break;
         case ($index <= 30):
-            return 'Избыточная';
+            return 'Overweight';
             break;
         case ($index <= 35):
             return 'Obesity';
@@ -243,36 +248,11 @@ function normIndexBodyMass(float $index) : string
     }
 }
 
-function normDavenport(float $index) : string
+function getNormDavenport(float $index) : string
 {
     if (($index > 3) || ($index < 1)) {
         return '-';
     } else {
         return '+';
     }
-}
-
-function validSubmit(array $resultArray) : bool
-{
-    foreach ($resultArray as $arg) {
-        if ($arg <= 0) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-function arrayToCsv(array $resultArray)
-{
-    $result = fopen("result.csv", "w+");
-    writeInFile($result, $resultArray);
-    fclose($result);
-}
-
-function uploadFile(string $fileName, string $fileTmpPath) : string
-{
-    $filePath = './uploaded_files/' . $fileName;
-    move_uploaded_file($fileTmpPath, $filePath);
-    return $filePath;
 }

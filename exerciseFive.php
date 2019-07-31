@@ -4,9 +4,9 @@ require_once 'functions.php';
 
 if (count($argv) > 1) {
     if (validArgv($argv)) {
-        $people = checkArgv($argv);
+        $people = getArgv($argv);
     }
 } else {
-    $people = readPeople('people.csv');
+    $people = readCsv('people.csv');
 }
-arrayToCsv(peopleToArray($people, true));
+writeCsv(getResultArray($people, true));
