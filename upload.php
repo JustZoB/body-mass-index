@@ -1,6 +1,5 @@
 <?php
 declare (strict_types=1);
-session_start();
 require_once 'functions.php';
 
 $fileTmpPath = $_FILES['uploadedFile']['tmp_name'];
@@ -13,5 +12,4 @@ $resultArray = addHeaders();
 $resultArray = peopleToArray(readPeople($dest_path), $resultArray);
 arrayToCsv($resultArray);
 
-$_SESSION['message'] = 'Result in result.csv';
 header("Location: exerciseSeven.php");
