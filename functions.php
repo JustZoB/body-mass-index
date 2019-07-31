@@ -52,15 +52,12 @@ function readCsv(string $path) : array
 {
     $array = [];
     if (($file = fopen($path, 'r')) !== false) {
-        $heads = [];
-        for ($i = 0; $i < sizeof(file($path)); $i++) {
+        $line = fgetcsv($file, 1000, ',');
+        $heads = $line;
+        for ($i = 0; $i < sizeof(file($path)) - 1; $i++) {
             $line = fgetcsv($file, 1000, ',');
-            if ($i === 0) {
-                $heads = $line;
-            } else {
-                for ($j = 0; $j < count($line); $j++) {
-                    $array[$i - 1][$heads[$j]] = $line[$j];
-                }
+            for ($j = 0; $j < count($line); $j++) {
+                $array[$i][$heads[$j]] = $line[$j];
             }
         }
         fclose($file);
