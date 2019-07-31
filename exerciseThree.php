@@ -2,6 +2,6 @@
 declare (strict_types=1);
 require_once 'functions.php';
 
-$resultArray = addTableHeaders();
+$resultArray = addHeaders();
 $resultArray = peopleToArray(readPeople(), $resultArray);
 arrayToCsv($resultArray);

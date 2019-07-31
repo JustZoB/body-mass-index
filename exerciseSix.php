@@ -9,6 +9,7 @@
     Your mass: <input type="text" name="mass" id="mass"/><br/>
     Your height: <input type="text" name="height" id="height"/><br/>
     Your chest circumference: <input type="text" name="chest" id="chest"/><br/>
+    Select a file: <input type="file" name="file" id="file"><br/>
     <input type="submit" id="submitFormData" onclick="SubmitFormData();"/>
 </form>
 
@@ -20,19 +21,5 @@
 
 </body>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script type="text/javascript">
-    function SubmitFormData() {
-        let mass = $("#mass").val(),
-            height = $("#height").val(),
-            chest = $("#chest").val(),
-            m = $.isNumeric(mass),
-            h = $.isNumeric(height),
-            c = $.isNumeric(chest);
-        if (mass < 0 || height < 0 || chest < 0 || !m || !h || !c) {
-            alert("Enter nonzero positive numbers.");
-        } else {
-            $.post("submit.php", {mass: mass, height: height, chest: chest});
-        }
-    }
-</script>
+<script type="text/javascript" src="script.js"></script>
 </html>

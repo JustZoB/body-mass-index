@@ -2,7 +2,7 @@
 declare (strict_types=1);
 require_once 'functions.php';
 
-$resultArray = addTableHeaders();
+$resultArray = addHeaders();
 if (validArgv($argv)) {
     $resultArray = peopleToArray(checkArgv($argv), $resultArray);
 }

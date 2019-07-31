@@ -1,7 +1,7 @@
 <?php
 require_once 'functions.php';
 
-$resultArray = addTableHeaders();
+$resultArray = addHeaders();
 
 if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) {
     if (validSubmit([(float)$_POST['mass'], (float)$_POST['height'], (float)$_POST['chest']])) {

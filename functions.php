@@ -91,7 +91,7 @@ function readArgv(array $argv) : array
     return ['people' => $people, 'row' => $row];
 }
 
-function addTableHeaders() : array
+function addHeaders() : array
 {
     $indexsArray = arrayOfIndexs();
     $resultArray = [];
