@@ -1,5 +1,5 @@
 <?php
-session_start(); 
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -8,13 +8,12 @@ session_start();
     <title>Index body mass</title>
 </head>
 <body>
-    <form method="POST" action="upload.php" enctype="multipart/form-data">
-        Upload a File: <input type="file" name="uploadedFile" /> <br />
-        <input type="submit" name="uploadBtn" value="Upload" />
-    </form>
+<form method="POST" action="upload.php" enctype="multipart/form-data">
+    Upload a File: <input type="file" name="uploadedFile"/> <br/>
+    <input type="submit" name="uploadBtn" value="Upload"/>
+</form>
 <?php
-if (isset($_SESSION['message']) && $_SESSION['message'])
-{
+if (isset($_SESSION['message']) && $_SESSION['message']) {
     printf('<b>%s</b>', $_SESSION['message']);
     unset($_SESSION['message']);
 }

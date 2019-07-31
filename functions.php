@@ -1,7 +1,8 @@
 <?php
 const TABLE_COL = 3;
 
-function arrayOfIndexs() : array {
+function arrayOfIndexs() : array
+{
     return $indexsArray = [
         [
             'name' => 'IMT',
@@ -97,27 +98,27 @@ function addHeaders() : array
     $resultArray = [];
     $resultArray[0] = ['Mass', 'Height', 'Chest'];
     foreach ($indexsArray as $indexBodyMass) {
-        array_push($resultArray[0], 
-        $indexBodyMass['name'], 
-        $indexBodyMass['name'] . ' norm');
+        array_push($resultArray[0],
+            $indexBodyMass['name'],
+            $indexBodyMass['name'] . ' norm');
     }
 
     return $resultArray;
 }
 
-function writeInFile($result, array $resultArray) {
+function writeInFile($result, array $resultArray)
+{
     foreach ($resultArray as $resultArrayString) {
         fputcsv($result, $resultArrayString);
     }
 }
-
-
 
 function validArgv($arguments) : bool
 {
     for ($i = 1; $i < count($arguments); $i++) {
         if ((float)$arguments[$i] == 0) {
             echo "Enter nonzero positive numbers. \n";
+
             return false;
         }
     }
@@ -171,14 +172,15 @@ function peopleToArray(array $people, array $resultArray) : array
 
         foreach ($indexsArray as $indexMT) {
             $resultArray = indexesToArray(
-                $indexMT['name'], 
-                $indexMT['formula']((float)$human['height'], (float)$human['mass'], (float)$human['chest']), 
-                (float)$human['mass'], 
+                $indexMT['name'],
+                $indexMT['formula']((float)$human['height'], (float)$human['mass'], (float)$human['chest']),
+                (float)$human['mass'],
                 $resultArray,
                 $line);
         }
         $line++;
     }
+
     return $resultArray;
 }
 
@@ -192,7 +194,6 @@ function indexesToArray(string $name, float $index, float $mass, array $resultAr
     return $resultArray;
 }
 
-
 function norm(string $name, float $index, float $mass) : string
 {
     if ($name === 'IMT') {
@@ -202,6 +203,7 @@ function norm(string $name, float $index, float $mass) : string
     } else {
         $norm = normOther($index, $mass);
     }
+
     return $norm;
 }
 
@@ -255,7 +257,7 @@ function normDavenport(float $index) : string
 
 function validSubmit(array $resultArray) : bool
 {
-    foreach($resultArray as $arg) {
+    foreach ($resultArray as $arg) {
         if ($arg <= 0) {
             return false;
         }
@@ -264,7 +266,7 @@ function validSubmit(array $resultArray) : bool
     return true;
 }
 
-function arrayToCsv(array $resultArray) 
+function arrayToCsv(array $resultArray)
 {
     $result = fopen("result.csv", "w+");
     writeInFile($result, $resultArray);

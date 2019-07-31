@@ -11,7 +11,7 @@ if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) {
             'chest' => (float)$_POST['chest']
         ];
         $resultArray = peopleToArray($people, $resultArray);
-    }   
+    }
 }
 
 arrayToCsv($resultArray);
