@@ -2,7 +2,6 @@
 declare (strict_types=1);
 require_once 'functions.php';
 
-$resultArray = addHeaders();
 if (count($argv) > 1) {
     if (validArgv($argv)) {
         $people = checkArgv($argv);
@@ -10,5 +9,5 @@ if (count($argv) > 1) {
 } else {
     $people = readPeople('people.csv');
 }
-$resultArray = peopleToArray($people, $resultArray);
+$resultArray = peopleToArray($people, true);
 arrayToCsv($resultArray);

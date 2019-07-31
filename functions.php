@@ -92,20 +92,6 @@ function readArgv(array $argv) : array
     return ['people' => $people, 'row' => $row];
 }
 
-function addHeaders() : array
-{
-    $indexsArray = arrayOfIndexs();
-    $resultArray = [];
-    $resultArray[0] = ['Mass', 'Height', 'Chest'];
-    foreach ($indexsArray as $indexBodyMass) {
-        array_push($resultArray[0],
-            $indexBodyMass['name'],
-            $indexBodyMass['name'] . ' norm');
-    }
-
-    return $resultArray;
-}
-
 function writeInFile($result, array $resultArray)
 {
     foreach ($resultArray as $resultArrayString) {
@@ -163,10 +149,12 @@ function showIndex(string $name, float $index, float $mass)
     echo "Index $name: $index, Norm $name: $norm \n";
 }
 
-function peopleToArray(array $people, array $resultArray) : array
+function peopleToArray(array $people, bool $headers) : array
 {
     $indexsArray = arrayOfIndexs();
-    $line = 1;
+    $resultArray = [];
+    $line = 0;
+
     foreach ($people as $human) {
         $resultArray[$line] = ['mass' => $human['mass'], 'height' => $human['height'], 'chest' => $human['chest']];
 
@@ -179,6 +167,15 @@ function peopleToArray(array $people, array $resultArray) : array
                 $line);
         }
         $line++;
+    }
+
+    if ($headers) {
+        $arrayKeys = array_keys($resultArray[1]);
+        $head = [];
+        foreach ($arrayKeys as $key) {
+            $head[] = $key;
+        }
+        array_unshift($resultArray, $head);
     }
 
     return $resultArray;
@@ -271,4 +268,11 @@ function arrayToCsv(array $resultArray)
     $result = fopen("result.csv", "w+");
     writeInFile($result, $resultArray);
     fclose($result);
+}
+
+function uploadFile($fileName, $fileTmpPath) : string
+{
+    $filePath = './uploaded_files/' . $fileName;
+    move_uploaded_file($fileTmpPath, $filePath);
+    return $filePath;
 }

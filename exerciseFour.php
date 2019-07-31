@@ -2,8 +2,7 @@
 declare (strict_types=1);
 require_once 'functions.php';
 
-$resultArray = addHeaders();
 if (validArgv($argv)) {
-    $resultArray = peopleToArray(checkArgv($argv), $resultArray);
+    $resultArray = peopleToArray(checkArgv($argv), true);
 }
 arrayToCsv($resultArray);
