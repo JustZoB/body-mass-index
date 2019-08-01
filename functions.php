@@ -81,7 +81,7 @@ function validArgv(array $arguments) : bool
 {
     for ($i = 1; $i < count($arguments); $i++) {
         if ((float)$arguments[$i] == 0) {
-            echo "Enter nonzero positive numbers. \n";
+            echo 'Enter nonzero positive numbers.' . PHP_EOL;
 
             return false;
         }
@@ -100,17 +100,17 @@ function getArgv(array $arguments) : array
     $lineCounts = $arrayArgv['lineCounts'];
 
     if (count($arguments) === 0) {
-        echo "Enter your mass, height and chest circumference. \n";
+        echo 'Enter your mass, height and chest circumference.' . PHP_EOL;
     } elseif (((count($arguments)) % count($heads)) === 1) {
-        echo "Enter your height and chest circumference. \n";
+        echo 'Enter your height and chest circumference.' . PHP_EOL;
         unset($array[$lineCounts]);
     } elseif (((count($arguments)) % count($heads)) === 2) {
-        echo "Enter your chest circumference. \n";
+        echo 'Enter your chest circumference.' . PHP_EOL;
         unset($array[$lineCounts]);
     } else {
-        echo "Something went wrong. \n";
+        echo 'Something went wrong.' . PHP_EOL;
     }
-    echo "Numbers of lines $lineCounts \n";
+    echo 'Numbers of lines ' . $lineCounts . PHP_EOL;
 
     return $array;
 }
@@ -174,7 +174,7 @@ function validSubmit(array $resultArray) : bool
 
 function writeCsv(array $resultArray)
 {
-    $result = fopen("result.csv", "w+");
+    $result = fopen('result.csv', 'w+');
     foreach ($resultArray as $line) {
         fputcsv($result, $line);
     }

@@ -6,4 +6,4 @@ if (isset($_FILES['uploadedFile'])) {
     writeCsv(getResult(readCsv($filePath), true));
 }
 
-header("Location: exerciseSeven.php");
+header('Location: exerciseSeven.php');
