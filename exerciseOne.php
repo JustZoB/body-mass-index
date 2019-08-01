@@ -8,7 +8,7 @@ function writeTerminal(array $people)
 {
     $indexsArray = initIndexs();
     foreach ($people as $human) {
-        echo "Mass: " . $human['mass'] . ", Height: " . $human['height'] . ", Chest circumference: " . $human['chest'] . "\n";
+        echo 'Mass: ' . $human['mass'] . ', Height: ' . $human['height'] . ', Chest circumference: ' . $human['chest'] . "\n";
         foreach ($indexsArray as $indexMT) {
             writeIndex($indexMT['name'], $indexMT['formula']((int)$human['height'],
                 (int)$human['mass'], (int)$human['chest']), (int)$human['mass']);

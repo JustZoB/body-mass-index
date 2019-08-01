@@ -13,7 +13,7 @@
     <input type="submit" id="submitFormData" onclick="SubmitFormData();"/>
 </form>
 
-<?php if (isset($_POST['mass']) && isset($_POST['height']) && isset($_POST['chest'])) : ?>
+<?php if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) : ?>
     <p><?= 'Mass ' . $_POST['mass'] ?><br />
     <?= 'Height ' . $_POST['height'] ?><br />
     <?= 'Chest circumference ' . $_POST['chest'] ?></p>
