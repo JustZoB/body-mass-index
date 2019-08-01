@@ -52,11 +52,9 @@ function readCsv(string $path) : array
 {
     $array = [];
     if (($file = fopen($path, 'r')) !== false) {
-        $line = fgetcsv($file, 1000, ',');
-        $heads = $line;
+        $heads = fgetcsv($file, 1000, ',');
         for ($i = 0; $i < sizeof(file($path)) - 1; $i++) {
-            $line = fgetcsv($file, 1000, ',');
-            $array[$i] = array_combine($heads, $line);
+            $array[$i] = array_combine($heads, fgetcsv($file, 1000, ','));
         }
         fclose($file);
     }
