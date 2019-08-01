@@ -14,9 +14,9 @@
 </form>
 
 <?php if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) : ?>
-    <p>Mass <?=$_POST['mass'] ?></p>
-    <p>Height <?=$_POST['height'] ?></p>
-    <p>Chest circumference <?=$_POST['chest'] ?></p>
+    <p>Mass <?= $_POST['mass'] ?></p>
+    <p>Height <?= $_POST['height'] ?></p>
+    <p>Chest circumference <?= $_POST['chest'] ?></p>
 <?php endif ?>
 
 </body>

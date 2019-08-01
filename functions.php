@@ -120,7 +120,7 @@ function getResult(array $array, bool $headers) : array
     $indexsArray = initIndexs();
     $resultArray = [];
     $line = 0;
-    
+
     foreach ($array as $item) {
         $columns = array_keys(reset($array));
         for ($i = 0; $i < count($columns); $i++) {
@@ -133,14 +133,14 @@ function getResult(array $array, bool $headers) : array
 
         foreach ($indexsArray as $indexItem) {
             $resultArray = setIndex(
-                $indexItem['name'], 
-                $indexItem['formula']($height, $mass, $chest), 
+                $indexItem['name'],
+                $indexItem['formula']($height, $mass, $chest),
                 $mass, $resultArray, $line);
         }
         $line++;
     }
 
-    if (($headers) && (!empty($resultArray))){
+    if (($headers) && (!empty($resultArray))) {
         $arrayKeys = array_keys(reset($resultArray));
         $head = [];
         foreach ($arrayKeys as $key) {
@@ -148,6 +148,7 @@ function getResult(array $array, bool $headers) : array
         }
         array_unshift($resultArray, $head);
     }
+
     return $resultArray;
 }
 
@@ -185,6 +186,7 @@ function uploadFile(string $fileName, string $fileTmpPath) : string
 {
     $filePath = './uploaded_files/' . $fileName;
     move_uploaded_file($fileTmpPath, $filePath);
+
     return $filePath;
 }
 
