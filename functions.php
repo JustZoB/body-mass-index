@@ -58,6 +58,7 @@ function readCsv(string $path) : array
         }
         fclose($file);
     }
+    
     return $array;
 }
 
