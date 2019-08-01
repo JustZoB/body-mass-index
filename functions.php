@@ -58,7 +58,7 @@ function readCsv(string $path) : array
         }
         fclose($file);
     }
-    
+
     return $array;
 }
 
@@ -115,7 +115,7 @@ function getArgv(array $arguments) : array
     return $array;
 }
 
-function getResultArray(array $array, bool $headers) : array
+function getResult(array $array, bool $headers) : array
 {
     $indexsArray = initIndexs();
     $resultArray = [];

@@ -9,4 +9,4 @@ if (count($argv) > 1) {
 } else {
     $people = readCsv('people.csv');
 }
-writeCsv(getResultArray($people, true));
+writeCsv(getResult($people, true));
