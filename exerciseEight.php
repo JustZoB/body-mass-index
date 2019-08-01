@@ -5,14 +5,19 @@
     <title>Index body mass</title>
 </head>
 <body>
-<form method="post">
+<select id="importSelect">
+  <option value="form">Form</option>
+  <option value="csv">Csv</option>
+</select>
+
+<form method="post" id="form">
     Your mass: <input type="text" name="mass" id="mass"/><br/>
     Your height: <input type="text" name="height" id="height"/><br/>
     Your chest circumference: <input type="text" name="chest" id="chest"/><br/>
     <input type="submit" id="submitFormData" onclick="SubmitFormData();"/>
 </form>
-
-<form method="post" action="upload.php" enctype="multipart/form-data">
+<br/>
+<form method="post" action="upload.php" enctype="multipart/form-data" id="csv">
     Upload a File: <input type="file" name="uploadedFile"/> <br/>
     <input type="submit" name="uploadBtn" value="Upload"/>
 </form>
@@ -25,5 +30,5 @@
 
 </body>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
-<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="scriptExport.js"></script>
 </html>
