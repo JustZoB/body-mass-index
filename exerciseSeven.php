@@ -5,7 +5,7 @@
     <title>Index body mass</title>
 </head>
 <body>
-<form method="POST" action="upload.php" enctype="multipart/form-data">
+<form method="post" action="upload.php" enctype="multipart/form-data">
     Upload a File: <input type="file" name="uploadedFile"/> <br/>
     <input type="submit" name="uploadBtn" value="Upload"/>
 </form>

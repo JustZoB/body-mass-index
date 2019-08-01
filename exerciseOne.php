@@ -6,10 +6,9 @@ writeTerminal(readCsv('people.csv'));
 
 function writeTerminal(array $people)
 {
-    $indexs = initIndexs();
     foreach ($people as $human) {
         echo 'Mass: ' . $human['mass'] . ', Height: ' . $human['height'] . ', Chest circumference: ' . $human['chest'] . PHP_EOL;
-        foreach ($indexs as $item) {
+        foreach (initIndexs() as $item) {
             writeIndex($item['name'], $item['formula']((int)$human['height'],
                 (int)$human['mass'], (int)$human['chest']), (int)$human['mass']);
         }
