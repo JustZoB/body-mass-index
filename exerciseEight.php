@@ -22,6 +22,8 @@
     <input type="submit" name="submitFile"/>
 </form>
 
+<div class="content"></div>
+
 </body>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="scriptExport.js"></script>

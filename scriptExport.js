@@ -24,9 +24,7 @@ $(function(){
                 data: {mass: mass, height: height, chest: chest},
                 dataType: 'json',
                 success: function( result ) {
-                    console.log(result[0]);
-                    result.shift();
-                    console.log(result);
+                    createTable(result);    
                 }
             });
             $('#form')[0].reset();
@@ -45,14 +43,31 @@ $('#csv').on('submit', function(e){
         processData: false,
         data: formData,
         success: function( result ){
-            result = JSON.parse(result);
-            console.log(result[0]);
-            result.shift();
-            console.log(result);
+            createTable(JSON.parse(result));
         }
     });
 });
 
+function createTable(array) {
+    $(` <table class="table" border="1">
+            <caption class="table__head">Index Body Mass</caption>
+        </table>`).appendTo($(".content"));
+    createTableHead(array[0]);
+    let heads = array.shift();
+    createTableContent(heads, array);
+}
 
-
-
+function createTableHead(heads) {
+    $(`<tr class="table__headColumns"></tr>`).appendTo($(".table"));
+    for (let i = 0; i < heads.length; i++) {
+        $(`<th class="table__headColumn">${ heads[i] }</th>`).appendTo($(".table__headColumns"));
+    }
+}
+function createTableContent(heads, array) {
+    for (let i = 0; i < array.length; i++) {
+        $(`<tr></tr>`).appendTo($(".table"));
+        for (let j = 0; j < heads.length; j++) {
+            $(`<td>${ array[i][heads[j]] }</td>`).appendTo($("tr").last());
+        }
+    }
+}
