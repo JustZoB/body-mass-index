@@ -46,13 +46,17 @@ $('#csv').on('submit', function(e){
             createTable(JSON.parse(result));
         }
     });
+    $('#csv')[0].reset();
 });
 
 function createTable(array) {
-    $(` <table class="table" border="1">
-            <caption class="table__head">Index Body Mass</caption>
-        </table>`).appendTo($(".content"));
-    createTableHead(array[0]);
+    if ($('.content').is(':empty')){
+        $(` <table class="table" border="1">
+                <caption class="table__head">Index Body Mass</caption>
+            </table>`).appendTo($(".content"));
+        createTableHead(array[0]);
+    }
+
     let heads = array.shift();
     createTableContent(heads, array);
 }
