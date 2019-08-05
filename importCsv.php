@@ -10,5 +10,6 @@ if ($_FILES['file']['error'] == UPLOAD_ERR_OK) {
     $filePath = uploadFile($_FILES['file']['name'], $_FILES['file']['tmp_name']);
     $array = getResult(readCsv($filePath), true);
     writeCsv($array);
+    sqlQueryInsert($array);
     echo json_encode($array);
 }

@@ -9,6 +9,16 @@ select.change(function() {
     }
 });
 
+$.ajax({
+    type: 'POST',
+    url: 'exportSql.php',
+    contentType: false,
+    processData: false,
+    success: function( result ){
+        createTable(JSON.parse(result));
+    }
+});
+
 $(function(){
     $('#form').on('submit', function(e){
         e.preventDefault();

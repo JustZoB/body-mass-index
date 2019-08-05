@@ -157,7 +157,7 @@ function setIndex(string $name, float $index, float $mass, array $resultArray, i
     $norm = getNorm($name, $index, $mass);
 
     $resultArray[$line][$name] = $index;
-    $resultArray[$line]['Norm ' . $name] = $norm;
+    $resultArray[$line]['Norm_' . $name] = $norm;
 
     return $resultArray;
 }
@@ -216,7 +216,7 @@ function getNormIndexBodyMass(float $index) : string
 {
     switch ($index) {
         case ($index <= 16):
-            return 'Severe deficiency';
+            return 'Severe_deficiency';
             break;
         case ($index <= 18.5):
             return 'Deficiency';
@@ -231,13 +231,13 @@ function getNormIndexBodyMass(float $index) : string
             return 'Obesity';
             break;
         case ($index <= 40):
-            return 'Severe obesity';
+            return 'Severe_obesity';
             break;
         case ($index > 40):
-            return 'Very severe obesity';
+            return 'Very severe_obesity';
             break;
         default:
-            return 'Incorrect value';
+            return 'Incorrect_value';
             break;
     }
 }
@@ -249,4 +249,42 @@ function getNormDavenport(float $index) : string
     } else {
         return '+';
     }
+}
+
+function sqlQueryInsert(array $array) 
+{
+    $link = mysqli_connect("127.0.0.1", "justzob", "ei7veeChu4bo", "ibm");
+    $heads = implode(',', $array[0]);
+    
+    if (count($array) === 2) {
+        mysqli_query($link, getQuery($heads, $array[1]));
+    } else {
+        array_shift($array);
+        foreach($array as $item) {
+            mysqli_query($link, getQuery($heads, $item));
+        }
+    }
+}
+
+function getQuery(string $heads, array $user) : string
+{
+    $str = "";
+    foreach ($user as $item) {
+        if (gettype($item) == 'string') {
+            $item = '\'' . $item . '\',';
+        } else {
+            $item .= ',';    
+        }
+        $str .= $item;
+    }
+    $str = substr($str, 0, -1);
+    return 'INSERT INTO indexs (' . $heads . ') VALUES(' . $str . ');';
+}
+
+function sqlQueryGetTable() : array
+{
+    $link = mysqli_connect("127.0.0.1", "justzob", "ei7veeChu4bo", "ibm");
+    $result = mysqli_query($link, "SELECT * FROM indexs");
+    for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row);
+    return $data;
 }
