@@ -9,15 +9,7 @@ select.change(function() {
     }
 });
 
-$.ajax({
-    type: 'POST',
-    url: 'exportSql.php',
-    contentType: false,
-    processData: false,
-    success: function( result ){
-        createTable(JSON.parse(result));
-    }
-});
+exportSql();
 
 $(function(){
     $('#form').on('submit', function(e){
@@ -34,7 +26,7 @@ $(function(){
                 data: {mass: mass, height: height, chest: chest},
                 dataType: 'json',
                 success: function( result ) {
-                    createTable(result);    
+                    exportSql();
                 }
             });
             $('#form')[0].reset();
@@ -53,14 +45,34 @@ $('#csv').on('submit', function(e){
         processData: false,
         data: formData,
         success: function( result ){
-            createTable(JSON.parse(result));
+            exportSql();
+            $(`<a href="${ JSON.parse(result).shift() }" download>Download csv source</a><br />`).appendTo($(".content"));
         }
     });
+    
     $('#csv')[0].reset();
 });
 
+function exportSql() {
+    $(".content").html("");
+    $.ajax({
+        type: 'POST',
+        url: 'exportSql.php',
+        contentType: false,
+        processData: false,
+        success: function( result ){
+            if (result[0] !== "<") {
+                result = JSON.parse(result);
+                let file_path = result.shift();
+                createTable(result);
+                $(`<a class="csv_result" href="${ file_path }" download>Download csv result</a><br />`).appendTo($(".content"));
+            }
+        }
+    });
+}
+
 function createTable(array) {
-    if ($('.content').is(':empty')){
+    if(!$("div").is("table")){
         $(` <table class="table" border="1">
                 <caption class="table__head">Index Body Mass</caption>
             </table>`).appendTo($(".content"));

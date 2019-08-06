@@ -1,5 +1,7 @@
 <?php
 require_once 'functions.php';
+require_once 'sqlFunctions.php';
+
 if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) {
     if (validSubmit([(float)$_POST['mass'], (float)$_POST['height'], (float)$_POST['chest']])) {
         $human[] = [
@@ -9,7 +11,7 @@ if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) {
         ];
         $array = getResult($human, true);
         writeCsv($array);
-        sqlQueryInsert($array);
+        sqlImport($array);
         echo json_encode($array);
     }
 }
