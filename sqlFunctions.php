@@ -1,8 +1,5 @@
 <?php
-const PORT = "127.0.0.1";
-const USER = "justzob";
-const PASSWORD = "ei7veeChu4bo";
-const DATABASE = "ibm";
+require_once 'config.php';
 
 function sqlImport(array $array) 
 {
@@ -31,12 +28,12 @@ function sqlExport() : array
 
 function connect()
 {
-    return mysqli_connect(PORT, USER, PASSWORD, DATABASE);
+    return mysqli_connect(CONFIG['port'], CONFIG['user'], CONFIG['password'], CONFIG['database']);
 }
 
 function select($link) : array
 {
-    $result = mysqli_query($link, "SELECT DISTINCT * FROM indexs");
+    $result = mysqli_query($link, 'SELECT DISTINCT * FROM indexs');
     for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row);
 
     return $data;
@@ -44,7 +41,7 @@ function select($link) : array
 
 function insert(string $columnName, array $user) : string
 {
-    $str = "";
+    $str = '';
     foreach ($user as $item) {
         if (gettype($item) == 'string') {
             sprintf('%s%s%s', '\'', $item, '\'');
