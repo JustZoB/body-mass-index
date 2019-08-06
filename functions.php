@@ -51,12 +51,14 @@ function initIndexs() : array
 function readCsv(string $path) : array
 {
     $array = [];
-    if (($file = fopen($path, 'r')) !== false) {
+    if ($file = fopen($path, 'r')) {
         $heads = fgetcsv($file, 1000, ',');
         for ($i = 0; $i < sizeof(file($path)) - 1; $i++) {
             $array[$i] = array_combine($heads, fgetcsv($file, 1000, ','));
         }
         fclose($file);
+    } else {
+        echo 'Error: cant open file ' . $path;
     }
 
     return $array;
@@ -175,9 +177,12 @@ function validSubmit(array $resultArray) : bool
 
 function writeCsv(array $resultArray)
 {
-    $result = fopen('result.csv', 'w+');
-    foreach ($resultArray as $line) {
-        fputcsv($result, $line);
+    if ($result = fopen('result.csv', 'w+')) {
+        foreach ($resultArray as $line) {
+            fputcsv($result, $line);
+        }
+    } else {
+        echo 'Error: cant open file result.csv';
     }
     fclose($result);
 }

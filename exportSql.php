@@ -4,14 +4,19 @@ require_once 'functions.php';
 require_once 'sqlFunctions.php';
 
 $result = sqlExport();
-$heads = array_keys($result[0]);
+$heads = array_keys(reset($result));
 array_unshift($result, $heads);
 
 $file_path = 'uploaded_files/result.csv';
-$file = fopen($file_path, 'w+');
-foreach ($result as $line) {
-    fputcsv($file, $line);  
+if ($file = fopen($file_path, 'w+')) {
+    foreach ($result as $line) {
+        fputcsv($file, $line);  
+    }
+} else {
+    echo 'Error: can\'t open file ' . $file_path;
 }
+
+
 fclose($file);
 
 array_unshift($result, $file_path);

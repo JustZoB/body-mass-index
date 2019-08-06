@@ -25,8 +25,11 @@ $(function(){
                 url: 'submit.php',
                 data: {mass: mass, height: height, chest: chest},
                 dataType: 'json',
-                success: function( result ) {
+                success: function() {
                     exportSql();
+                },
+                error: function (error) {
+                    alert('Error: ' + eval(error));
                 }
             });
             $('#form')[0].reset();
@@ -47,6 +50,9 @@ $('#csv').on('submit', function(e){
         success: function( result ){
             exportSql();
             $(`<a href="${ JSON.parse(result).shift() }" download>Download csv source</a><br />`).appendTo($(".content"));
+        },
+        error: function (error) {
+            alert('Error: ' + eval(error));
         }
     });
     
@@ -67,6 +73,9 @@ function exportSql() {
                 createTable(result);
                 $(`<a class="csv_result" href="${ file_path }" download>Download csv result</a><br />`).appendTo($(".content"));
             }
+        },
+        error: function (error) {
+            alert('Error: ' + eval(error));
         }
     });
 }
