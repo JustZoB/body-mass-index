@@ -1,4 +1,8 @@
 <?php
+const PORT = "127.0.0.1";
+const USER = "justzob";
+const PASSWORD = "ei7veeChu4bo";
+const DATABASE = "ibm";
 
 function sqlImport(array $array) 
 {
@@ -27,7 +31,7 @@ function sqlExport() : array
 
 function connect()
 {
-    return mysqli_connect("127.0.0.1", "justzob", "ei7veeChu4bo", "ibm");
+    return mysqli_connect(PORT, USER, PASSWORD, DATABASE);
 }
 
 function select($link) : array
