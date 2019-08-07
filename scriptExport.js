@@ -109,7 +109,7 @@ function setLink(link, name) {
     if (link[0] === '/') {
         link = link.substr(1);
     }
-    $(`<a href="${ link }" download>Download csv ${ name } ${ link }</a><br />`).appendTo($(".files"));
+    $(`<a href="${link}" download>Download csv ${name} ${link}</a><br />`).appendTo($(".files"));
 }
 
 function createTable(array) {

@@ -14,11 +14,11 @@ if ($_FILES['file']['error'] == UPLOAD_ERR_OK) {
     move_uploaded_file($_FILES['file']['tmp_name'], $full_unique_name);
     $filePath = uploadFile($_FILES['file']['name'], $_FILES['file']['tmp_name']);
     $array = getResult(readCsv($full_unique_name), true);
-    
+
     writeCsv($array);
     sqlImportIndexs($array);
     $fileResult = sqlImportFiles($array, $file);
-    
+
     array_unshift($array, $fileResult);
     array_unshift($array, $file);
 
