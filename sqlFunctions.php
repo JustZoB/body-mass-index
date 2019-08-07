@@ -64,7 +64,7 @@ function insertIndexs(string $columnName, array $user) : string
         $str .= $item;
     }
     $str = substr($str, 0, -1);
-    
+
     return 'INSERT INTO indexs (' . $columnName . ') VALUES(' . $str . ');';
 }
 
