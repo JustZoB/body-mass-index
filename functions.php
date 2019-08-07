@@ -51,10 +51,14 @@ function initIndexs() : array
 function readCsv(string $path) : array
 {
     $array = [];
+    $delimiter = ',';
     if ($file = fopen($path, 'r')) {
-        $heads = fgetcsv($file, 1000, ',');
+        $heads = fgetcsv($file, 1000, $delimiter);
+        if (count($heads) === 1) {
+            $delimiter = ';';
+        }
         for ($i = 0; $i < sizeof(file($path)) - 1; $i++) {
-            $array[$i] = array_combine($heads, fgetcsv($file, 1000, ','));
+            $array[$i] = array_combine($heads, fgetcsv($file, 1000, $delimiter));
         }
         fclose($file);
     } else {
