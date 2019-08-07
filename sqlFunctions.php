@@ -1,6 +1,8 @@
 <?php
-require_once 'config.php';
 
+function getConfig() : array {
+    return require_once 'config.php';
+}
 function sqlImport(array $array) 
 {
     $link = connect();
@@ -28,8 +30,10 @@ function sqlExport() : array
 
 function connect()
 {
-    return mysqli_connect(CONFIG['port'], CONFIG['user'], CONFIG['password'], CONFIG['database']);
+    $config = getConfig();
+    return mysqli_connect($config['port'], $config['user'], $config['password'], $config['database']);
 }
+
 
 function select($link) : array
 {
