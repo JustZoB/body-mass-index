@@ -24,5 +24,5 @@ if (isset($_FILES['file'])) {
 
     echo json_encode($array);
 } else {
-    echo 'Error: ' . $_FILES['file']['error'];
+    echo 'Error: Can\'t open this file';
 }
