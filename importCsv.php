@@ -5,7 +5,7 @@ require_once 'sqlFunctions.php';
 const UPLOAD_DIR = '/uploaded_files/';
 
 $filePath = dirname(__FILE__) . UPLOAD_DIR;
-if ($_FILES['file']['error'] == UPLOAD_ERR_OK) {
+if (isset($_FILES['file'])) {
     $extension_file = mb_strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
     $file_name = uniqid('file_', true) . '.' . $extension_file;
     $full_unique_name = $filePath . $file_name;
