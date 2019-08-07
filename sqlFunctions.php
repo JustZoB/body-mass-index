@@ -3,6 +3,7 @@
 function getConfig() : array {
     return require_once 'config.php';
 }
+
 function sqlImport(array $array) 
 {
     $link = connect();

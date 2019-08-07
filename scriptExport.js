@@ -1,5 +1,5 @@
 let select = $("#importSelect");
-select.change(function() {
+select.change(function () {
     if (select.val() === "form") {
         $("#csv").css("display", "none");
         $("#form").css("display", "block");
@@ -11,8 +11,8 @@ select.change(function() {
 
 exportSql();
 
-$(function(){
-    $('#form').on('submit', function(e){
+$(function () {
+    $('#form').on('submit', function (e) {
         e.preventDefault();
         let mass = $("#mass").val(),
             height = $("#height").val(),
@@ -25,7 +25,7 @@ $(function(){
                 url: 'submit.php',
                 data: {mass: mass, height: height, chest: chest},
                 dataType: 'json',
-                success: function() {
+                success: function () {
                     exportSql();
                 },
                 error: function (error) {
@@ -37,25 +37,25 @@ $(function(){
     });
 });
 
-$('#csv').on('submit', function(e){
+$('#csv').on('submit', function (e) {
     e.preventDefault();
     formData = new FormData();
-    formData.append('file', file.files[0]); 
+    formData.append('file', file.files[0]);
     $.ajax({
         type: 'POST',
         url: 'importCsv.php',
         contentType: false,
         processData: false,
         data: formData,
-        success: function( result ){
+        success: function (result) {
             exportSql();
-            $(`<a href="${ JSON.parse(result).shift() }" download>Download csv source</a><br />`).appendTo($(".content"));
+            $(`<a href="${JSON.parse(result).shift()}" download>Download csv source</a><br />`).appendTo($(".content"));
         },
         error: function (error) {
             alert('Error: ' + eval(error));
         }
     });
-    
+
     $('#csv')[0].reset();
 });
 
@@ -66,12 +66,12 @@ function exportSql() {
         url: 'exportSql.php',
         contentType: false,
         processData: false,
-        success: function( result ){
+        success: function (result) {
             if (result[0] !== "<") {
                 result = JSON.parse(result);
                 let file_path = result.shift();
                 createTable(result);
-                $(`<a class="csv_result" href="${ file_path }" download>Download csv result</a><br />`).appendTo($(".content"));
+                $(`<a class="csv_result" href="${file_path}" download>Download csv result</a><br />`).appendTo($(".content"));
             }
         },
         error: function (error) {
@@ -81,7 +81,7 @@ function exportSql() {
 }
 
 function createTable(array) {
-    if(!$("div").is("table")){
+    if (!$("div").is("table")) {
         $(` <table class="table" border="1">
                 <caption class="table__head">Index Body Mass</caption>
             </table>`).appendTo($(".content"));
@@ -95,14 +95,15 @@ function createTable(array) {
 function createTableHead(heads) {
     $(`<tr class="table__headColumns"></tr>`).appendTo($(".table"));
     for (let i = 0; i < heads.length; i++) {
-        $(`<th class="table__headColumn">${ heads[i] }</th>`).appendTo($(".table__headColumns"));
+        $(`<th class="table__headColumn">${heads[i]}</th>`).appendTo($(".table__headColumns"));
     }
 }
+
 function createTableContent(heads, array) {
     for (let i = 0; i < array.length; i++) {
         $(`<tr></tr>`).appendTo($(".table"));
         for (let j = 0; j < heads.length; j++) {
-            $(`<td>${ array[i][heads[j]] }</td>`).appendTo($("tr").last());
+            $(`<td>${array[i][heads[j]]}</td>`).appendTo($("tr").last());
         }
     }
 }

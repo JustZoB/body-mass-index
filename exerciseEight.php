@@ -6,8 +6,8 @@
 </head>
 <body>
 <select id="importSelect">
-  <option value="form">Form</option>
-  <option value="csv">Csv</option>
+    <option value="form">Form</option>
+    <option value="csv">Csv</option>
 </select>
 
 <form method="post" id="form">
