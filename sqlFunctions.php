@@ -57,14 +57,14 @@ function insertIndexs(string $columnName, array $user) : string
     $str = '';
     foreach ($user as $item) {
         if (gettype($item) == 'string') {
-            $item = '\'' . $item . '\',';
+            $item = sprintf('\'%s\',', $item);
         } else {
             $item .= ',';
         }
         $str .= $item;
     }
     $str = substr($str, 0, -1);
-
+    
     return 'INSERT INTO indexs (' . $columnName . ') VALUES(' . $str . ');';
 }
 
