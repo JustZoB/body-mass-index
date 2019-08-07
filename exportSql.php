@@ -3,9 +3,9 @@ declare (strict_types=1);
 require_once 'functions.php';
 require_once 'sqlFunctions.php';
 
-$result = sqlExport();
-$heads = array_keys(reset($result));
-array_unshift($result, $heads);
+$result = sqlExport('indexs');
+$columnName = array_keys(reset($result));
+array_unshift($result, $columnName);
 
 $file_path = 'uploaded_files/result.csv';
 if ($file = fopen($file_path, 'w+')) {

@@ -22,6 +22,7 @@
     <input type="submit" name="submitFile"/>
 </form>
 
+<div class="files"></div>
 <div class="content"></div>
 
 </body>

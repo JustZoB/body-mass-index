@@ -9,7 +9,8 @@ select.change(function () {
     }
 });
 
-exportSql();
+exportFiles();
+exportIndexs();
 
 $(function () {
     $('#form').on('submit', function (e) {
@@ -26,7 +27,8 @@ $(function () {
                 data: {mass: mass, height: height, chest: chest},
                 dataType: 'json',
                 success: function () {
-                    exportSql();
+                    exportIndexs();
+                    $(`<a href="${JSON.parse(result).shift()}" download>Download csv source</a><br />`).appendTo($(".content"));
                 },
                 error: function (error) {
                     alert('Error: ' + eval(error));
@@ -48,8 +50,9 @@ $('#csv').on('submit', function (e) {
         processData: false,
         data: formData,
         success: function (result) {
-            exportSql();
-            $(`<a href="${JSON.parse(result).shift()}" download>Download csv source</a><br />`).appendTo($(".content"));
+            $(`<a href="${JSON.parse(result).shift()}" download>Download csv source this file</a><br />`).appendTo($(".files"));
+            $(`<a href="${JSON.parse(result).shift()}" download>Download csv result this file</a><br />`).appendTo($(".files"));
+            exportIndexs();
         },
         error: function (error) {
             alert('Error: ' + eval(error));
@@ -59,7 +62,7 @@ $('#csv').on('submit', function (e) {
     $('#csv')[0].reset();
 });
 
-function exportSql() {
+function exportIndexs() {
     $(".content").html("");
     $.ajax({
         type: 'POST',
@@ -71,13 +74,42 @@ function exportSql() {
                 result = JSON.parse(result);
                 let file_path = result.shift();
                 createTable(result);
-                $(`<a class="csv_result" href="${file_path}" download>Download csv result</a><br />`).appendTo($(".content"));
+                $(`<a class="csv_result" href="${file_path}" download>Download csv result all database</a><br />`).appendTo($(".content"));
             }
         },
         error: function (error) {
             alert('Error: ' + eval(error));
         }
     });
+}
+
+function exportFiles() {
+    $.ajax({
+        type: 'POST',
+        url: 'exportFiles.php',
+        contentType: false,
+        processData: false,
+        success: function (result) {
+            if ((result[0] !== "<") && (result != "")) {
+                result = JSON.parse(result);
+                let columnNames = result.shift();
+                result.forEach(item => {
+                    setLink(item[columnNames[0]], columnNames[0]);
+                    setLink(item[columnNames[1]], columnNames[1]);
+                });
+            }
+        },
+        error: function (error) {
+            alert('Error: ' + eval(error));
+        }
+    });
+}
+
+function setLink(link, name) {
+    if (link[0] === '/') {
+        link = link.substr(1);
+    }
+    $(`<a href="${ link }" download>Download csv ${ name } ${ link }</a><br />`).appendTo($(".files"));
 }
 
 function createTable(array) {

@@ -9,13 +9,19 @@ if ($_FILES['file']['error'] == UPLOAD_ERR_OK) {
     $extension_file = mb_strtolower(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION));
     $file_name = uniqid('file_', true) . '.' . $extension_file;
     $full_unique_name = $filePath . $file_name;
+    $file = UPLOAD_DIR . $file_name;
+
     move_uploaded_file($_FILES['file']['tmp_name'], $full_unique_name);
     $filePath = uploadFile($_FILES['file']['name'], $_FILES['file']['tmp_name']);
     $array = getResult(readCsv($full_unique_name), true);
+    
     writeCsv($array);
-    sqlImport($array);
+    sqlImportIndexs($array);
+    $fileResult = sqlImportFiles($array, $file);
+    
+    array_unshift($array, $fileResult);
+    array_unshift($array, $file);
 
-    array_unshift($array, UPLOAD_DIR . $file_name);
     echo json_encode($array);
 } else {
     echo 'Error: ' . $_FILES['file']['error'];

@@ -11,7 +11,7 @@ if (isset($_POST['mass'], $_POST['height'], $_POST['chest'])) {
         ];
         $array = getResult($human, true);
         writeCsv($array);
-        sqlImport($array);
+        sqlImportIndexs($array);
         echo json_encode($array);
     }
 }
