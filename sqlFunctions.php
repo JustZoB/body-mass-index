@@ -29,7 +29,7 @@ function sqlImportFiles(array $array, string $fileSource) : string
 
 function formatToString(string $str) : string
 {
-    return '\'' . $str . '\'';
+    return sprintf("\'%s\'", $str);
 }
 
 function getFile(array $array) : string

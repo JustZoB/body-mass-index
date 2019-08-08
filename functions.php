@@ -172,7 +172,7 @@ function setIndex(string $name, float $index, float $mass, array $resultArray, i
 function validSubmit(array $resultArray) : bool
 {
     foreach ($resultArray as $arg) {
-        if ($arg <= 0) {
+        if ((float)$arg <= 0) {
             return false;
         }
     }
