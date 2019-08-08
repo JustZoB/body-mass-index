@@ -7,21 +7,21 @@ function sqlImportIndexs(array $array)
     $columnName = implode(',', $array[0]);
 
     if (count($array) === 2) {
-        mysqli_query($link, insertIndexs($columnName, $array[1]));
+        mysqli_query($link, insert('indexs', $columnName, getData($array[1])));
     } else {
         array_shift($array);
         foreach ($array as $item) {
-            mysqli_query($link, insertIndexs($columnName, $item));
+            mysqli_query($link, insert('indexs', $columnName, getData($item)));
         }
     }
     mysqli_close($link);
 }
 
-function sqlImportFiles(array $array, string $fileSource) : string
+function sqlImportFiles(array $array, string $fileSource, string $columnsName) : string
 {
     $link = connect();
     $fileResult = getFile($array);
-    mysqli_query($link, insertFiles(formatToString($fileSource), formatToString($fileResult)));
+    mysqli_query($link, insert('files', $columnsName, formatToString($fileSource) . ',' . formatToString($fileResult)));
     mysqli_close($link);
 
     return $fileResult;
@@ -36,27 +36,29 @@ function getFile(array $array) : string
 {
     $file_path = DIR . uniqid('file_', true) . '.csv';
     $file = fopen($file_path, 'w+');
-    if ($file !== false) {
-        foreach ($array as $line) {
-            fputcsv($file, $line);
-        }
-    } else {
+    if ($file === false) {
         echo 'Error: can\'t open file ' . $file_path;
+        
+        return $file_path;
+    }
+
+    foreach ($array as $line) {
+        fputcsv($file, $line);
     }
     fclose($file);
 
     return $file_path;
 }
 
-function insertFiles(string $fileSource, string $fileResult) : string
+function insert(string $name, string $columns, string $data) : string 
 {
-    return 'INSERT INTO files (source, result) VALUES(' . $fileSource . ',' . $fileResult . ');';
+    return 'INSERT INTO' . $name . '( ' . $columns . ') VALUES(' . $data . ');';
 }
 
-function insertIndexs(string $columnName, array $user) : string
+function getData(array $array) : string
 {
     $str = '';
-    foreach ($user as $item) {
+    foreach ($array as $item) {
         if (gettype($item) == 'string') {
             $item = sprintf('\'%s\',', $item);
         } else {
@@ -64,9 +66,8 @@ function insertIndexs(string $columnName, array $user) : string
         }
         $str .= $item;
     }
-    $str = substr($str, 0, -1);
 
-    return 'INSERT INTO indexs (' . $columnName . ') VALUES(' . $str . ');';
+    return substr($str, 0, -1);
 }
 
 function getDatabase(string $table) : array
@@ -81,16 +82,14 @@ function getDatabase(string $table) : array
 function select(mysqli $link, string $table) : array
 {
     $result = mysqli_query($link, 'SELECT DISTINCT * FROM ' . $table);
-    for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row) {
-        ;
-    }
+    for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row);
 
     return $data;
 }
 
 function getConfig() : array
 {
-    return require_once 'config.php';
+    return require 'config.php';
 }
 
 function connect()

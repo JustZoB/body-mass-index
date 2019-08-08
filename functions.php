@@ -52,15 +52,16 @@ function readCsv(string $path, string $delimiter = ',') : array
 {
     $array = [];
     $file = fopen($path, 'r');
-    if ($file !== false) {
-        $heads = fgetcsv($file, 1000, $delimiter);
-        for ($i = 0; $i < sizeof(file($path)) - 1; $i++) {
-            $array[$i] = array_combine($heads, fgetcsv($file, 1000, $delimiter));
-        }
-        fclose($file);
-    } else {
+    if ($file === false) {
         echo 'Error: cant open file ' . $path;
+        
+        return $array;
     }
+    $heads = fgetcsv($file, 1000, $delimiter);
+    for ($i = 0; $i < sizeof(file($path)) - 1; $i++) {
+        $array[$i] = array_combine($heads, fgetcsv($file, 1000, $delimiter));
+    }
+    fclose($file);
 
     return $array;
 }

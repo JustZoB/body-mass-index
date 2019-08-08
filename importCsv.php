@@ -20,7 +20,7 @@ if (isset($_FILES['file'])) {
     
     writeCsv($array);
     sqlImportIndexs($array);
-    $fileResult = sqlImportFiles($array, $file);
+    $fileResult = sqlImportFiles($array, $file, 'source, result');
 
     array_unshift($array, $fileResult);
     array_unshift($array, $file);
