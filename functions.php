@@ -48,22 +48,12 @@ function initIndexs() : array
     ];
 }
 
-function readCsv(string $path) : array
+function readCsv(string $path, string $delimiter = ',') : array
 {
-    $delimiters = getDelimetrs();
-    $delimiter = ',';
     $array = [];
     $file = fopen($path, 'r');
     if ($file !== false) {
-        foreach ($delimiters as $delim) {
-            $heads = fgetcsv($file, 1000, $delim);
-            if (count($heads) === 1) {
-                rewind($file);
-            } else {
-                $delimiter = $delim;
-                break;
-            }
-        }
+        $heads = fgetcsv($file, 1000, $delimiter);
         for ($i = 0; $i < sizeof(file($path)) - 1; $i++) {
             $array[$i] = array_combine($heads, fgetcsv($file, 1000, $delimiter));
         }
@@ -266,9 +256,4 @@ function getNormDavenport(float $index) : string
     } else {
         return '+';
     }
-}
-
-function getDelimetrs() : array 
-{
-    return [',', ';', "\t", '|', "\t\t"];
 }

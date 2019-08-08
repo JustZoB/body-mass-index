@@ -41,13 +41,13 @@ $(function () {
 
 $('#csv').on('submit', function (e) {
     e.preventDefault();
-    formData = new FormData();
-    formData.append('file', file.files[0]);
+    formData = new FormData(this);  
     $.ajax({
         type: 'POST',
         url: 'importCsv.php',
         contentType: false,
         processData: false,
+        dataType: 'json',
         data: formData,
         success: function (result) {
             $(`<a href="${JSON.parse(result).shift()}" download>Download csv source this file</a><br />`).appendTo($(".files"));
