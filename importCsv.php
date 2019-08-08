@@ -18,7 +18,7 @@ if (isset($_FILES['file'])) {
         $array = getResult(readCsv($full_unique_name, ','), true);
     }
     
-    writeCsv($array);
+    writeCsv($array, 'result.csv');
     sqlImportIndexs($array);
     $fileResult = sqlImportFiles($array, $file, 'source, result');
 

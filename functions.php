@@ -177,9 +177,9 @@ function validSubmit(array $resultArray) : bool
     return true;
 }
 
-function writeCsv(array $resultArray)
+function writeCsv(array $resultArray, string $file_name)
 {
-    $result = fopen('result.csv', 'w+');
+    $result = fopen($file_name, 'w+');
     if ($result !== false) {
         foreach ($resultArray as $line) {
             fputcsv($result, $line);
