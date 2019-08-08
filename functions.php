@@ -50,13 +50,19 @@ function initIndexs() : array
 
 function readCsv(string $path) : array
 {
-    $array = [];
+    $delimiters = getDelimetrs();
     $delimiter = ',';
+    $array = [];
     $file = fopen($path, 'r');
     if ($file !== false) {
-        $heads = fgetcsv($file, 1000, $delimiter);
-        if (count($heads) === 1) {
-            $delimiter = ';';
+        foreach ($delimiters as $delim) {
+            $heads = fgetcsv($file, 1000, $delim);
+            if (count($heads) === 1) {
+                rewind($file);
+            } else {
+                $delimiter = $delim;
+                break;
+            }
         }
         for ($i = 0; $i < sizeof(file($path)) - 1; $i++) {
             $array[$i] = array_combine($heads, fgetcsv($file, 1000, $delimiter));
@@ -260,4 +266,9 @@ function getNormDavenport(float $index) : string
     } else {
         return '+';
     }
+}
+
+function getDelimetrs() : array 
+{
+    return [',', ';', "\t"];
 }
