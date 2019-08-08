@@ -270,5 +270,5 @@ function getNormDavenport(float $index) : string
 
 function getDelimetrs() : array 
 {
-    return [',', ';', "\t"];
+    return [',', ';', "\t", '|', "\t\t"];
 }

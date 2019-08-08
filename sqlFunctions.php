@@ -69,7 +69,7 @@ function insertIndexs(string $columnName, array $user) : string
     return 'INSERT INTO indexs (' . $columnName . ') VALUES(' . $str . ');';
 }
 
-function sqlExport(string $table) : array
+function getDatabase(string $table) : array
 {
     $link = connect();
     $data = select($link, $table);
@@ -78,7 +78,7 @@ function sqlExport(string $table) : array
     return $data;
 }
 
-function select($link, string $table) : array
+function select(mysqli $link, string $table) : array
 {
     $result = mysqli_query($link, 'SELECT DISTINCT * FROM ' . $table);
     for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row) {

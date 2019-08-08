@@ -3,7 +3,7 @@ declare (strict_types=1);
 require_once 'functions.php';
 require_once 'sqlFunctions.php';
 
-$result = sqlExport('indexs');
+$result = getDatabase('indexs');
 $columnName = array_keys(reset($result));
 array_unshift($result, $columnName);
 
