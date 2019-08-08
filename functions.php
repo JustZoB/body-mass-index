@@ -52,7 +52,8 @@ function readCsv(string $path) : array
 {
     $array = [];
     $delimiter = ',';
-    if ($file = fopen($path, 'r')) {
+    $file = fopen($path, 'r');
+    if ($file !== false) {
         $heads = fgetcsv($file, 1000, $delimiter);
         if (count($heads) === 1) {
             $delimiter = ';';
@@ -181,7 +182,8 @@ function validSubmit(array $resultArray) : bool
 
 function writeCsv(array $resultArray)
 {
-    if ($result = fopen('result.csv', 'w+')) {
+    $result = fopen('result.csv', 'w+');
+    if ($result !== false) {
         foreach ($resultArray as $line) {
             fputcsv($result, $line);
         }

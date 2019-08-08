@@ -35,7 +35,8 @@ function formatToString(string $str) : string
 function getFile(array $array) : string
 {
     $file_path = DIR . uniqid('file_', true) . '.csv';
-    if ($file = fopen($file_path, 'w+')) {
+    $file = fopen($file_path, 'w+');
+    if ($file !== false) {
         foreach ($array as $line) {
             fputcsv($file, $line);
         }
@@ -68,7 +69,7 @@ function insertIndexs(string $columnName, array $user) : string
     return 'INSERT INTO indexs (' . $columnName . ') VALUES(' . $str . ');';
 }
 
-function sqlExport($table) : array
+function sqlExport(string $table) : array
 {
     $link = connect();
     $data = select($link, $table);
@@ -77,7 +78,7 @@ function sqlExport($table) : array
     return $data;
 }
 
-function select($link, $table) : array
+function select($link, string $table) : array
 {
     $result = mysqli_query($link, 'SELECT DISTINCT * FROM ' . $table);
     for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row) {

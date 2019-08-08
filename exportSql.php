@@ -8,7 +8,8 @@ $columnName = array_keys(reset($result));
 array_unshift($result, $columnName);
 
 $file_path = 'uploaded_files/result.csv';
-if ($file = fopen($file_path, 'w+')) {
+$file = fopen($file_path, 'w+');
+if ($file !== false) {
     foreach ($result as $line) {
         fputcsv($file, $line);
     }
