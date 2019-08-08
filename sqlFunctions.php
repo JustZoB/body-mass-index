@@ -96,5 +96,5 @@ function connect()
 {
     $config = getConfig();
 
-    return mysqli_connect('127.0.0.1', 'justzob', 'ei7veeChu4bo', 'ibm');
+    return mysqli_connect($config['port'], $config['user'], $config['password'], $config['database']);
 }
