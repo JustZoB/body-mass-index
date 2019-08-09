@@ -50,8 +50,8 @@ $('#csv').on('submit', function (e) {
         dataType: 'json',
         data: formData,
         success: function (result) {
-            $(`<a href="${JSON.parse(result).shift()}" download>Download csv source this file</a><br />`).appendTo($(".files"));
-            $(`<a href="${JSON.parse(result).shift()}" download>Download csv result this file</a><br />`).appendTo($(".files"));
+            $(`<a href="${ result.shift() }" download>Download csv source this file</a><br />`).appendTo($(".files"));
+            $(`<a href="${ result.shift() }" download>Download csv result this file</a><br />`).appendTo($(".files"));
             exportIndexs();
         },
         error: function (error) {

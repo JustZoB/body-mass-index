@@ -29,7 +29,7 @@ function sqlImportFiles(array $array, string $fileSource, string $columnsName) :
 
 function formatToString(string $str) : string
 {
-    return sprintf("\'%s\'", $str);
+    return sprintf("'%s'", $str);
 }
 
 function getFile(array $array) : string
@@ -52,7 +52,7 @@ function getFile(array $array) : string
 
 function insert(string $name, string $columns, string $data) : string 
 {
-    return 'INSERT INTO' . $name . '( ' . $columns . ') VALUES(' . $data . ');';
+    return 'INSERT INTO ' . $name . ' (' . $columns . ') VALUES(' . $data . ');';
 }
 
 function getData(array $array) : string
