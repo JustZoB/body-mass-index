@@ -8,8 +8,8 @@ if ((isset($_POST['mass'], $_POST['height'], $_POST['chest'])) && (validSubmit([
         'height' => (float)$_POST['height'],
         'chest' => (float)$_POST['chest']
     ];
-    $array = getResult($human, true);
-    writeCsv($array, 'result.csv');
-    sqlImportIndexs($array);
+    $array = getResult($human);
+    writeCsv($array, 'result.csv', true);
+    sqlImportIndexes($array);
     echo json_encode($array);
 }

@@ -1,19 +1,14 @@
 <?php
 const DIR = 'uploaded_files/';
 
-function sqlImportIndexs(array $array)
+function sqlImportIndexes(array $array)
 {
     $link = connect();
-    $columnName = implode(',', $array[0]);
 
-    if (count($array) === 2) {
-        mysqli_query($link, insert('indexs', $columnName, getData($array[1])));
-    } else {
-        array_shift($array);
-        foreach ($array as $item) {
-            mysqli_query($link, insert('indexs', $columnName, getData($item)));
-        }
+    foreach ($array as $item) {
+        mysqli_query($link, insert('indexs', implode(",", array_keys(reset($array))), getData($item)));
     }
+
     mysqli_close($link);
 }
 
@@ -21,7 +16,9 @@ function sqlImportFiles(array $array, string $fileSource, string $columnsName) :
 {
     $link = connect();
     $fileResult = getFile($array);
+
     mysqli_query($link, insert('files', $columnsName, formatToString($fileSource) . ',' . formatToString($fileResult)));
+
     mysqli_close($link);
 
     return $fileResult;
@@ -42,9 +39,11 @@ function getFile(array $array) : string
         return $file_path;
     }
 
+    fputcsv($file, array_keys(reset($array)));
     foreach ($array as $line) {
         fputcsv($file, $line);
     }
+
     fclose($file);
 
     return $file_path;
@@ -82,6 +81,7 @@ function getDatabase(string $table) : array
 function select(mysqli $link, string $table) : array
 {
     $result = mysqli_query($link, 'SELECT DISTINCT * FROM ' . $table);
+    
     for ($data = []; $row = mysqli_fetch_assoc($result); $data[] = $row);
 
     return $data;

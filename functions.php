@@ -1,6 +1,7 @@
 <?php
+const UPLOAD_DIR = '/uploaded_files/';
 
-function initIndexs() : array
+function getIndexes() : array
 {
     return [
         [
@@ -58,6 +59,7 @@ function readCsv(string $path, string $delimiter = ',') : array
         return $array;
     }
     $heads = fgetcsv($file, 1000, $delimiter);
+
     for ($i = 0; $i < sizeof(file($path)) - 1; $i++) {
         $array[$i] = array_combine($heads, fgetcsv($file, 1000, $delimiter));
     }
@@ -119,49 +121,23 @@ function getArgv(array $arguments) : array
     return $array;
 }
 
-function getResult(array $array, bool $headers) : array
+function getResult(array $array) : array
 {
-    $indexsArray = initIndexs();
+    $indexesArray = getIndexes();
     $resultArray = [];
-    $line = 0;
 
-    foreach ($array as $item) {
-        $columns = array_keys(reset($array));
-        for ($i = 0; $i < count($columns); $i++) {
-            $resultArray[$line][$columns[$i]] = $item[$columns[$i]];
+    foreach ($array as $i => $item) {
+        $columnsName = array_keys(reset($array));
+        foreach ($columnsName as $name) {
+            $resultArray[$i][$name] = $item[$name];
         }
+        foreach ($indexesArray as $indexItem) {
+            $index = $indexItem['formula']($item['height'], $item['mass'], $item['chest']);
 
-        $mass = (float)$item['mass'];
-        $height = (float)$item['height'];
-        $chest = (float)$item['chest'];
-
-        foreach ($indexsArray as $indexItem) {
-            $resultArray = setIndex(
-                $indexItem['name'],
-                $indexItem['formula']($height, $mass, $chest),
-                $mass, $resultArray, $line);
+            $resultArray[$i][$indexItem['name']] = $index;
+            $resultArray[$i]['Norm_' . $indexItem['name']] = getNorm($indexItem['name'], $index, $item['mass']); 
         }
-        $line++;
     }
-
-    if (($headers) && (!empty($resultArray))) {
-        $arrayKeys = array_keys(reset($resultArray));
-        $head = [];
-        foreach ($arrayKeys as $key) {
-            $head[] = $key;
-        }
-        array_unshift($resultArray, $head);
-    }
-
-    return $resultArray;
-}
-
-function setIndex(string $name, float $index, float $mass, array $resultArray, int $line) : array
-{
-    $norm = getNorm($name, $index, $mass);
-
-    $resultArray[$line][$name] = $index;
-    $resultArray[$line]['Norm_' . $name] = $norm;
 
     return $resultArray;
 }
@@ -169,7 +145,7 @@ function setIndex(string $name, float $index, float $mass, array $resultArray, i
 function validSubmit(array $resultArray) : bool
 {
     foreach ($resultArray as $arg) {
-        if ((float)$arg <= 0) {
+        if (!is_numeric($arg)) {
             return false;
         }
     }
@@ -177,10 +153,18 @@ function validSubmit(array $resultArray) : bool
     return true;
 }
 
-function writeCsv(array $resultArray, string $file_name)
+function writeCsv(array $resultArray, string $file_name, bool $headers = false)
 {
     $result = fopen($file_name, 'w+');
     if ($result !== false) {
+        if (($headers) && (!empty($resultArray))) {
+            $arrayKeys = array_keys(reset($resultArray));
+            $head = [];
+            foreach ($arrayKeys as $key) {
+                $head[] = $key;
+            }
+            fputcsv($result, $head);
+        }
         foreach ($resultArray as $line) {
             fputcsv($result, $line);
         }
@@ -192,7 +176,7 @@ function writeCsv(array $resultArray, string $file_name)
 
 function uploadFile(string $fileName, string $fileTmpPath) : string
 {
-    $filePath = './uploaded_files/' . $fileName;
+    $filePath = '.' . UPLOAD_DIR . $fileName;
     move_uploaded_file($fileTmpPath, $filePath);
 
     return $filePath;

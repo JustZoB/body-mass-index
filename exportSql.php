@@ -18,6 +18,6 @@ if ($file !== false) {
 }
 
 fclose($file);
+$result[] = $file_path;
 
-array_unshift($result, $file_path);
 echo json_encode($result);

@@ -27,7 +27,7 @@ $('#form').on('submit', function (e) {
             dataType: 'json',
             success: function () {
                 exportIndexs();
-                setDownloadLink(JSON.parse(result).shift(), 'source', 'content');
+                setDownloadLink(JSON.parse(result).pop(), 'source', 'content');
             },
             error: function (error) {
                 alert('Error: ' + eval(error));
@@ -48,8 +48,8 @@ $('#csv').on('submit', function (e) {
         dataType: 'json',
         data: formData,
         success: function (result) {
-            setDownloadLink(result.shift(), 'source', 'files');
-            setDownloadLink(result.shift(), 'result', 'files');
+            setDownloadLink(result.pop(), 'source', 'files');
+            setDownloadLink(result.pop(), 'result', 'files');
             exportIndexs();
         },
         error: function (error) {
@@ -70,7 +70,7 @@ function exportIndexs() {
         success: function (result) {
             if (result[0] !== "<") {
                 result = JSON.parse(result);
-                let file_path = result.shift();
+                let file_path = result.pop();
                 createTable(result);
                 setDownloadLink(file_path, 'result all database', 'content');
             }
