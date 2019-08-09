@@ -104,7 +104,7 @@ function exportFiles() {
 }
 
 function setDownloadLink(link, that, place) {
-    $(`<a href="${ link }" download>Download csv ${ that } this file</a><br />`).appendTo($("." + place));
+    $(`<a href="${ link }" download>Download csv ${ that }</a><br />`).appendTo($("." + place));
 }
 
 function setLink(link, name) {
