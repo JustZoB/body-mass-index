@@ -12,31 +12,29 @@ select.change(function () {
 exportFiles();
 exportIndexs();
 
-$(function () {
-    $('#form').on('submit', function (e) {
-        e.preventDefault();
-        let mass = $("#mass").val(),
-            height = $("#height").val(),
-            chest = $("#chest").val();
-        if (mass < 0 || height < 0 || chest < 0 || !$.isNumeric(mass) || !$.isNumeric(height) || !$.isNumeric(chest)) {
-            alert("Enter nonzero positive numbers.");
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: 'submit.php',
-                data: {mass: mass, height: height, chest: chest},
-                dataType: 'json',
-                success: function () {
-                    exportIndexs();
-                    $(`<a href="${JSON.parse(result).shift()}" download>Download csv source</a><br />`).appendTo($(".content"));
-                },
-                error: function (error) {
-                    alert('Error: ' + eval(error));
-                }
-            });
-            $('#form')[0].reset();
-        }
-    });
+$('#form').on('submit', function (e) {
+    e.preventDefault();
+    let mass = $("#mass").val(),
+        height = $("#height").val(),
+        chest = $("#chest").val();
+    if (mass < 0 || height < 0 || chest < 0 || !$.isNumeric(mass) || !$.isNumeric(height) || !$.isNumeric(chest)) {
+        alert("Enter nonzero positive numbers.");
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: 'submit.php',
+            data: {mass: mass, height: height, chest: chest},
+            dataType: 'json',
+            success: function () {
+                exportIndexs();
+                setDownloadLink(JSON.parse(result).shift(), 'source', 'content');
+            },
+            error: function (error) {
+                alert('Error: ' + eval(error));
+            }
+        });
+        $('#form')[0].reset();
+    }
 });
 
 $('#csv').on('submit', function (e) {
@@ -50,8 +48,8 @@ $('#csv').on('submit', function (e) {
         dataType: 'json',
         data: formData,
         success: function (result) {
-            $(`<a href="${ result.shift() }" download>Download csv source this file</a><br />`).appendTo($(".files"));
-            $(`<a href="${ result.shift() }" download>Download csv result this file</a><br />`).appendTo($(".files"));
+            setDownloadLink(result.shift(), 'source', 'files');
+            setDownloadLink(result.shift(), 'result', 'files');
             exportIndexs();
         },
         error: function (error) {
@@ -74,7 +72,7 @@ function exportIndexs() {
                 result = JSON.parse(result);
                 let file_path = result.shift();
                 createTable(result);
-                $(`<a class="csv_result" href="${file_path}" download>Download csv result all database</a><br />`).appendTo($(".content"));
+                setDownloadLink(file_path, 'result all database', 'content');
             }
         },
         error: function (error) {
@@ -103,6 +101,10 @@ function exportFiles() {
             alert('Error: ' + eval(error));
         }
     });
+}
+
+function setDownloadLink(link, that, place) {
+    $(`<a href="${ link }" download>Download csv ${ that } this file</a><br />`).appendTo($("." + place));
 }
 
 function setLink(link, name) {
