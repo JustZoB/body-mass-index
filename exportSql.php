@@ -8,10 +8,9 @@ $columnName = array_keys(reset($result));
 array_unshift($result, $columnName);
 
 $file_path = 'uploaded_files/result.csv';
-if (writeInFile($file_path, $result)) {
+if (!writeInFile($file_path, $result)) {
     echo 'Error can\'t open file ' . $file_path;
 } else {
-    fclose($file);
     $result[] = $file_path;
 
     echo json_encode($result);
