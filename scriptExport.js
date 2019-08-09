@@ -39,7 +39,7 @@ $('#form').on('submit', function (e) {
 
 $('#csv').on('submit', function (e) {
     e.preventDefault();
-    formData = new FormData(this);  
+    formData = new FormData(this);
     $.ajax({
         type: 'POST',
         url: 'importCsv.php',
@@ -104,7 +104,7 @@ function exportFiles() {
 }
 
 function setDownloadLink(link, that, place) {
-    $(`<a href="${ link }" download>Download csv ${ that }</a><br />`).appendTo($("." + place));
+    $(`<a href="${link}" download>Download csv ${that}</a><br />`).appendTo($("." + place));
 }
 
 function setLink(link, name) {

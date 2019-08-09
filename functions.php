@@ -153,7 +153,7 @@ function validSubmit(array $resultArray) : bool
     return true;
 }
 
-function writeCsv(array $resultArray, string $file_name, bool $headers = false)
+function writeCsv(array $resultArray, string $file_name, bool $headers = false, string $delimiter = ',')
 {
     $result = fopen($file_name, 'w+');
     if ($result !== false) {
@@ -163,10 +163,10 @@ function writeCsv(array $resultArray, string $file_name, bool $headers = false)
             foreach ($arrayKeys as $key) {
                 $head[] = $key;
             }
-            fputcsv($result, $head);
+            fputcsv($result, $head, $delimiter);
         }
         foreach ($resultArray as $line) {
-            fputcsv($result, $line);
+            fputcsv($result, $line, $delimiter);
         }
     } else {
         echo 'Error: cant open file result.csv';
