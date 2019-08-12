@@ -13,7 +13,7 @@ if ((isset($_POST['mass'], $_POST['height'], $_POST['chest'])) && (validSubmit([
         'chest' => (float)$_POST['chest']
     ];
     $array = getResult($human);
-    writeCsv($array, 'result.csv', true);
+    arrayToCsv($array, 'result.csv', true);
     sqlImportIndexes($array);
     echo json_encode($array);
 }

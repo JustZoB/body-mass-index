@@ -49,7 +49,7 @@ function getIndexes() : array
     ];
 }
 
-function readCsv(string $path, string $delimiter = ',') : array
+function csvToArray(string $path, string $delimiter = ',') : array
 {
     $array = [];
     $file = fopen($path, 'r');
@@ -153,7 +153,7 @@ function validSubmit(array $resultArray) : bool
     return true;
 }
 
-function writeCsv(array $resultArray, string $file_name, bool $headers = false, string $delimiter = ',')
+function arrayToCsv(array $resultArray, string $file_name, bool $headers = false, string $delimiter = ',')
 {
     $result = fopen($file_name, 'w+');
     if ($result !== false) {
