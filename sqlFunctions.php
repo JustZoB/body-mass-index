@@ -4,9 +4,11 @@ const DIR = 'uploaded_files/';
 function sqlImportIndexes(array $array)
 {
     $link = connect();
+    $arrayOfUsers = [];
     foreach ($array as $item) {
-        mysqli_query($link, insert('indexs', implode(",", array_keys(reset($array))), getData($item)));
+        $arrayOfUsers .= getData($item);
     }
+    mysqli_query($link, insertIndex('indexs', implode(",", array_keys(reset($array))), $arrayOfUsers));
     mysqli_close($link);
 }
 
@@ -54,6 +56,15 @@ function writeInFile(string $file_path, array $array, string $delimiter = ',') :
 function insert(string $name, string $columns, string $data) : string
 {
     return 'INSERT INTO ' . $name . ' (' . $columns . ') VALUES(' . $data . ');';
+}
+
+function insertIndex(string $name, string $columns, array $data) : string
+{
+    $query = 'INSERT INTO ' . $name . ' (' . $columns . ') VALUES';
+    foreach ($data as $item) {
+        $query .= '(' . $item . ')';
+    }
+    return $query;
 }
 
 function getData(array $array) : string

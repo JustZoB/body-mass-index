@@ -19,7 +19,7 @@
 <br/>
 <form method="post" id="csv" style="display: none;" enctype="multipart/form-data">
     Upload a File: <input id="file" type="file" name="file"/> <br/>
-    Delimitr csv File (by default ','): <input type="text" name="delimitr" id="delimitr"/><br/>
+    Delimiter csv File (by default ','): <input type="text" name="delimitr" id="delimitr"/><br/>
     <input type="submit" name="submitFile"/>
 </form>
 
