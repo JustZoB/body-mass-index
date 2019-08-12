@@ -5,7 +5,6 @@ require_once 'sqlFunctions.php';
 
 $result = getDatabase('files');
 if ($result) {
-    $columnName = array_keys(reset($result));
-    array_unshift($result, $columnName);
+    array_unshift($result, array_keys(reset($result)));
     echo json_encode($result);
 }
